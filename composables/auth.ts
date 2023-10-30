@@ -1,89 +1,104 @@
+import {defineStore} from "pinia";
+import type UserProfile from "~/types";
+import type UserPayloadInterface from "~/types";
+import type UserRegisterForm from "~/types";
 
-import { defineStore } from 'pinia';
-import UserProfile from "~/types";
-import UserToken from "~/types";
-import UserPayloadInterface from "~/types";
-import UserRegisterForm from "~/types";
-
-export const useAuthStore = defineStore('auth', {
-
-    state: () => ({
-        authenticated: false,
-        loading: false,
-        userProfile: {} as UserProfile,
-        token: {} as UserToken
-    }),
-    actions: {
-        async authenticateUser(authDataRequest: UserPayloadInterface) {
-            const { data, pending,error }: any = await useFetch('http://localhost:8080/api/v1/auth/authenticate', {
-                method: 'post',
-                headers: { 'Content-Type': 'application/json' },
+export const API_BASE_URL = 'http://localhost:8080';
+export const OAUTH2_REDIRECT_URI = 'http://localhost:3000/oauth2/redirect'
+export const GOOGLE_AUTH_URL = API_BASE_URL + '/oauth2/authorize/google?redirect_uri=' + OAUTH2_REDIRECT_URI;
+export const useAuthStore = defineStore("auth", () => {
+    const config = useRuntimeConfig();
+    const authenticated = ref(false)
+    const loading = ref(false)
+    const token = ref(useCookie("accessToken").value || "")
+    const userProfile = ref({} as UserProfile)
+    async function authenticateUser(authDataRequest: UserPayloadInterface) {
+        const {data, pending, error}: any = await useFetch(
+            config.public.apiUrl+"/api/v1/auth/authenticate",
+            {
+                method: "post",
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(authDataRequest),
+
+            },
+        );
+        loading.value = pending;
+        if (error.value) {
+            loading.value = false;
+            authenticated.value = false;
+            return false;
+        }
+        if (data.value) {
+            token.value = data?.value.accessToken;
+            useCookie("accessToken").value = data?.value.accessToken;
+            console.log(data?.value.accessToken)
+            getUserProfile().then(() => {
+                authenticated.value = true;
             });
-            this.loading = pending;
-            if(error.value){
-                this.loading = false;
-                this.authenticated = false;
-                return false;
-            }
-            if (data.value) {
-                const token = useCookie('token');
-                token.value = data.value;
-                this.token = data.value;
-                this.getUserProfile().then(()=>{
-                    this.authenticated = true;
-                });
-                return true;
+            return true;
+        }
+    }
 
-            }
-        },
-        async authRegisterUser(registerdata: UserRegisterForm) {
-            const { data, pending, error }: any = await useFetch('http://localhost:8080/api/v1/auth/register', {
-                method: 'post',
-                headers: { 'Content-Type': 'application/json' },
-                body: registerdata
-            })
-            this.loading = pending;
 
-            console.log(error);
-            if(error.value){
-                this.loading = false;
-                this.authenticated = false;
-                return false;
-            }
-            console.log(data);
-            if (data.value) {
-                const token = useCookie('token');
-                token.value = data?.value;
-                this.token=data.value
-                this.getUserProfile().then(()=>{
-                    this.authenticated = true;
-                });
-                return true;
-            }
-        },
-        async getUserProfile() {
+    async function authRegisterUser(registerData: UserRegisterForm) {
+        const {data, pending, error}: any = await useFetch(
+            config.public.apiUrl+ "/api/v1/auth/register",
+            {
+                method: "post",
+                headers: {"Content-Type": "application/json"},
+                body: registerData,
 
-            const { data, pending }: any = await useFetch('http://localhost:8080/api/v1/user/profile', {
-                method: 'GET',
+            },
+        );
+        loading.value = pending;
+        if (error.value) {
+            loading.value = false;
+            authenticated.value = false;
+
+            return false;
+        }
+        if (data.value) {
+            token.value = data?.value.accessToken;
+            useCookie("accessToken").value = data?.value.accessToken;
+            getUserProfile().then(() => {
+                authenticated.value = true;
+            });
+            return true;
+        }
+    }
+    async function getUserProfile() {
+        const {data, pending}: any = await useFetch(
+            config.public.apiUrl+ + "/api/v1/user/profile",
+            {
+                method: "GET",
                 headers: {
-                    'Authorization': 'Bearer ' + this.token.access_token,
-                }
-            })
-            this.loading = pending;
-            if(data.value){
-                this.userProfile = data?.value;
-                console.log(this.userProfile);
-            }
+                    Authorization: "Bearer " + token.value,
+                },
+            },
+        );
+        loading.value = pending;
+        if (data.value) {
+            userProfile.value = data?.value;
 
-        },
+        }
+    }
+    async function logUserOut()
+    {
+        authenticated.value = false;
+        userProfile.value = {} as UserProfile;
+        token.value = '';
+    }
 
-        logUserOut() {
-            const token = useCookie('token');
-            this.authenticated = false;
-            token.value = null;
-            this.userProfile = {} as UserProfile;
-            this.token = {} as UserToken;
-        },
-    },
+    return{
+        authenticated,
+        loading,
+        token,
+        userProfile,
+        authenticateUser,
+        getUserProfile,
+        logUserOut,
+        authRegisterUser,
+        GOOGLE_AUTH_URL
+    }
 });
+

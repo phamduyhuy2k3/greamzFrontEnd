@@ -1,0 +1,86 @@
+<template>
+  <nav class="inline-flex items-center text-sm font-normal font-body text-xl">
+    <ol class="flex w-auto leading-none group md:flex-wrap">
+      <li class="flex items-center sm:hidden text-neutral-500">
+        <SfDropdown
+          v-model="dropdownOpened"
+          strategy="absolute"
+          placement="bottom-start"
+          @update:model-value="close"
+        >
+          <template #trigger>
+            <SfButton
+              class="relative w-5 h-5 !p-0 rounded-sm outline-secondary-600 hover:bg-transparent active:bg-transparent"
+              aria-label="More breadcrumbs"
+              variant="tertiary"
+              square
+              @click="toggle"
+            >
+              <template #prefix>
+                <SfIconMoreHoriz
+                  size="sm"
+                  class="text-neutral-500 hover:text-primary-700 active:text-primary-800 active:bg-transparent"
+                />
+              </template>
+            </SfButton>
+          </template>
+          <div class="px-4 py-2 rounded-md shadow-md border-neutral-100">
+            <li
+              v-for="item in breadcrumbs"
+              :key="item.name"
+              class="py-2 last-of-type:hidden"
+            >
+              <SfLink
+                :href="item.path"
+                :tag="NuxtLink"
+                variant="secondary"
+                class="leading-5 no-underline text-inherit hover:underline active:underline whitespace-nowrap outline-secondary-600"
+              >
+                {{ item.name }}
+              </SfLink>
+            </li>
+          </div>
+        </SfDropdown>
+      </li>
+      <li
+        v-for="(item, index) in breadcrumbs"
+        :key="item.name"
+        class="peer hidden sm:flex items-center peer-[:nth-of-type(even)]:before:content-['/'] peer-[:nth-of-type(even)]:before:px-2 peer-[:nth-of-type(even)]:before:leading-5 last-of-type:flex last-of-type:before:font-normal last-of-type:before:text-neutral-500 text-[#fafafa] last-of-type:text-[#a1a1aa] last-of-type:font-medium"
+      >
+        <SfLink
+          v-if="index < breadcrumbs.length - 1"
+          :href="item.path"
+          :tag="NuxtLink"
+          variant="secondary"
+          class="leading-5 no-underline hover:underline active:underline whitespace-nowrap outline-secondary-600 text-inherit"
+        >
+          {{ item.name }}
+        </SfLink>
+        <span v-else>
+          {{ item.name }}
+        </span>
+      </li>
+    </ol>
+  </nav>
+</template>
+
+<script lang="ts" setup>
+import {
+  SfDropdown,
+  SfButton,
+  SfLink,
+  SfIconMoreHoriz,
+} from "@storefront-ui/vue";
+import { ref, resolveComponent } from "vue";
+const NuxtLink = resolveComponent("NuxtLink");
+
+const {breadcrumbs}=userBreadCrumb()
+
+const dropdownOpened = ref(false);
+const close = () => {
+  dropdownOpened.value = false;
+};
+const toggle = () => {
+  dropdownOpened.value = !dropdownOpened.value;
+};
+</script>

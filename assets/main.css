@@ -3,5 +3,25 @@
 @tailwind utilities;
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
+.cart-header {
+  height: 70px;
+    background-color: #1f254a;
+}
+
+.cart-item-container {
+  background-color: #1f254a;
+}
+
+.cart-item-img {
+  width: 35%;
+  height: 75%;
+}
+
+.cart-item-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  align-self: center;
+}
+

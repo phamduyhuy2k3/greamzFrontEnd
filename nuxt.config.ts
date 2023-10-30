@@ -1,61 +1,47 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-export default ({
-  css: [
-      'vuetify/lib/styles/main.sass',
-    '@mdi/font/css/materialdesignicons.min.css',
-      'assets/main.css'
-  ],
-  build: {
-    transpile: ['vuetify'],
-  },
 
-  devtools: {enabled: false},
-  modules: [
-    '@nuxtjs/tailwindcss',
-    '@pinia/nuxt',
-    'nuxt-icon',
-    [
-      '@storyblok/nuxt',
-      {
-        accessToken: 'a4GQTPYAq9n8A56wsx61Fgtt',
-      },
-    ],
+import {tailwindConfig} from "@storefront-ui/vue/dist/tailwind-config";
+
+export default defineNuxtConfig({
+  css: [
+      "@mdi/font/css/materialdesignicons.min.css",
+    "assets/main.css"
   ],
-  pinia:{
-    autoImports: [
-      'defineStore',
-      'storeToRefs'
-    ]
+
+  build: {
+    transpile: ["vuetify"],
+  },
+  ssr: true,
+  devtools: { enabled: false },
+  modules: [
+      "@nuxtjs/tailwindcss",
+    "@pinia/nuxt",
+    "nuxt-icon",
+    "@nuxtjs/i18n",
+    '@vueuse/nuxt',
+
+   ],
+
+  i18n: {
+    vueI18n: "i18n.config.ts", // if you are using custom path, default
+  },
+  pinia: {
+    autoImports: ["defineStore", "storeToRefs"],
   },
   runtimeConfig: {
+    springBootServerApi: "http://localhost:8080",
     public: {
-
+      appUrl: "http://localhost:3000",
+      apiUrl: "http://localhost:8080",
     },
   },
   imports: {
-    dirs: ['stores']
+    dirs: ["stores"]
+
   },
   tailwindcss: {
     viewer: false,
-    content: [
-      "./components/**/*.{js,vue,ts}",
-      "./layouts/**/*.vue",
-      "./pages/**/*.vue",
-      "./plugins/**/*.{js,ts}",
-      "./nuxt.config.{js,ts}",
-      "./node_modules/flowbite/**/*.{js,ts}",
-      "./storyblok/**/*.{html,vue,js,ts}",
-    ],
-    theme: {
-      extend: {},
-    },
-    plugins: [
-      require('flowbite/plugin')({
-        charts: true,
-      }),
 
-    ],
 
-  }
-
-})
+  },
+});
