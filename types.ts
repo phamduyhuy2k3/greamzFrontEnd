@@ -10,10 +10,13 @@ export default interface UserRegisterForm {
   confirmPassword: string;
 }
 export default interface UserProfile {
+  id: Number;
   username: string;
   email: string;
   photo: string;
   fullname: string;
-  authorities: Array<string>;
+  role: string;
+  createdAt: Date;
+  provider: string;
 }
 

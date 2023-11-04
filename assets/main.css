@@ -24,4 +24,53 @@ body {
   font-weight: 600;
   align-self: center;
 }
+.router-link-exact-active {
 
+  color: #1612e1 !important;
+
+}
+.discount {
+  font-weight: 700;
+  background-color: #ff346d;
+  color: #fff;
+  position: absolute;
+  border-radius: 5px 5px 0;
+  padding: 1px 2px 2px 3px;
+  z-index: 2;
+}
+.discount:after {
+  transform: skewX(16deg);
+  width: 100%;
+  border-radius: 6px 3px;
+  content: "";
+  position: absolute;
+  background-color: #ff346d;
+  top: 0;
+  bottom: 0;
+  right: -4px;
+  z-index: -1;
+}
+.otp-input {
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+  margin: 0 10px;
+  font-size: 20px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+/* Background colour of an input field with value */
+.otp-input.is-complete {
+  background-color: #e4e4e4;
+}
+.otp-input::-webkit-inner-spin-button,
+.otp-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input::placeholder {
+  font-size: 15px;
+  text-align: center;
+  font-weight: 600;
+}

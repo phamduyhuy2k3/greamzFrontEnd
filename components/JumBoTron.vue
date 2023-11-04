@@ -3,13 +3,15 @@
     <img
       class="w-full h-auto max-w-full hidden sm:flex"
 
-      src="/img/campaign-banner-653bb83b095e0.jpg"
+      src="/img/home_header_bg_rainy_english.gif"
    />
 
-    <Navbar />
+    <Navbar  v-show="!isMobile" />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const isMobile = useState('isMobile')
+</script>
 
 <style scoped></style>

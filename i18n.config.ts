@@ -18,7 +18,49 @@ export default defineI18nConfig(() => ({
             refund: "Refunds",
             ssa: "Steam Subscriber Agreement",
             login: "Login",
-            signIn: "Sign in",
+            setting: "Setting",
+            logout: "Logout",
+            dashboard: "Dashboard",
+            navbar:{
+                home:"Home",
+                store:"Store",
+                categories: "Categories",
+            },
+            payment:{
+                title:"Payment",
+            },
+            cart:{
+                title:"Cart",
+                yspc:"Your Shopping Cart",
+            },
+            dashBoardPage:{
+                orders:{
+                    title:"My Orders",
+                    orderStatus: "Order Status",
+                    orderTable:{
+                        id:"Order ID",
+                        total:"Total",
+                        status:"Status",
+                        method:"Payment Method",
+                        create:"Created Date",
+
+                    }
+                },
+                profile: {
+                    title:"Profile",
+                    profileTable:{
+                        name:"Name",
+                    }
+                },
+                gameLibrary:{
+                    title:"Game Library",
+                    gameTable:{
+                        name:"Name",
+                        price:"Price",
+
+                    }
+                }
+            }
         },
         vi: {
             store: "Cửa hàng",
@@ -35,35 +77,47 @@ export default defineI18nConfig(() => ({
             refund: "Hoàn tiền",
             ssa: "Thỏa thuận người dùng Steam",
             login: "Đăng nhập",
-            signIn: "Đăng nhập",
-            alertRegister: {
-                success: "Đăng ký thành công",
-                error: "Đăng ký thất bại",
-
+            setting: "Cài đặt",
+            logout: "Đăng xuất",
+            dashboard: "Bảng điều khiển",
+            navbar:{
+                home:"Trang chủ",
+                store:"Cửa hàng",
+                categories:"Thể loại",
             },
-            alertLogin: {
-                success: "Đăng nhập thành công",
-                error: "Đăng nhập thất bại",
+            cart:{
+                title:"Giỏ hàng",
+                yspc:"Giỏ hàng của bạn",
+            },
+            dashBoardPage:{
+                orders:{
+                    title:"Đơn hàng của bạn",
+                    orderStatus: "Trạng thái đơn hàng",
+                    orderTable:{
+                        id:"Mã đơn hàng",
+                        total:"Tổng tiền",
+                        status:"Trạng thái",
+                        method:"Phương thức thanh toán",
+                        create:"Ngày tạo",
+                    }
+                },
+                profile:{
+                    title:"Thông tin cá nhân",
 
+                },
+                gameLibrary:{
+                    title:"Thư viện game",
+                    gameTable:{
+
+                    }
+                }
+            },
+            payment:{
+                title:"Thanh toán",
             }
+
+
         },
-        fr: {
-            store: "Magasin",
-            community: "Communauté",
-            about: "À propos",
-            support: "Soutien",
-        },
-        cn: {
-            store: "商店",
-            community: "社区",
-            about: "关于",
-            support: "支持",
-        },
-        jp: {
-            store: "店",
-            community: "コミュニティ",
-            about: "約",
-            support: "サポート",
-        },
+       
     },
 }));

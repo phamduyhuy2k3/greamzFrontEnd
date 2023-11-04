@@ -1,14 +1,14 @@
 <template>
   <div class="inline-flex flex-col items-center">
-    <div class="flex border border-neutral-300 rounded-md">
+    <div class="flex border border-[#d1d5db] rounded-md">
       <SfButton
           variant="tertiary"
-          :disabled="item.quantity <= min"
+          :disabled="isDisabled&& item.quantity <= min"
           square
           class="rounded-r-none"
           :aria-controls="inputId"
           aria-label="Decrease value"
-          @click="item.quantity--"
+          @click="decreaseQuantity()"
       >
         <SfIconRemove/>
       </SfButton>
@@ -43,7 +43,12 @@
 import {SfButton, SfIconAdd, SfIconRemove, useId} from '@storefront-ui/vue';
 import {clamp} from '@storefront-ui/shared';
 import {useCounter} from '@vueuse/core';
+import Swal from "sweetalert2";
 const {item} = defineProps({
+  isDisabled: {
+    type: Boolean,
+    default: true,
+  },
   item: {
     type: Object,
     required: true,
@@ -53,13 +58,47 @@ const min = ref(1);
 const max = ref(item.stock);
 const inputId = useId();
 const {  set} = useCounter(item.quantity, {min: min.value, max: max.value});
+const decreaseQuantity = () => {
+  item.quantity--;
+
+  if(item.quantity <min.value){
+    Swal.fire({
+      title: "Remove this item?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, remove it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        useCart().removeFromCart(item,false);
+      }else {
+        item.quantity=1;
+      }
+    });
+  }
+};
 function handleOnChange(event: Event) {
   const currentValue = (event.target as HTMLInputElement)?.value;
   const nextValue = parseFloat(currentValue);
   if(item.quantity >=item.stock){
     item.quantity=item.stock;
-  }else if(item.quantity <=min){
-    item.quantity=1;
+  }else if(item.quantity <=min.value){
+    Swal.fire({
+      title: "Remove this item?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, remove it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        useCart().removeFromCart(item,false);
+      }else {
+        item.quantity=1;
+      }
+    });
+
   }
   set(clamp(nextValue, min.value, max.value));
 }

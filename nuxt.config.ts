@@ -1,47 +1,80 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-import {tailwindConfig} from "@storefront-ui/vue/dist/tailwind-config";
 
 export default defineNuxtConfig({
-  css: [
-      "@mdi/font/css/materialdesignicons.min.css",
-    "assets/main.css"
-  ],
+    app: {
+        head:{
+            meta: [
 
-  build: {
-    transpile: ["vuetify"],
-  },
-  ssr: false,
-  devtools: { enabled: false },
-  modules: [
-      "@nuxtjs/tailwindcss",
-    "@pinia/nuxt",
-    "nuxt-icon",
-    "@nuxtjs/i18n",
-    '@vueuse/nuxt',
+                {name: 'naive-ui-style'},
+                {name: 'vue-style'},
+            ]
+        }
 
-   ],
-
-  i18n: {
-    vueI18n: "i18n.config.ts", // if you are using custom path, default
-  },
-  pinia: {
-    autoImports: ["defineStore", "storeToRefs"],
-  },
-  runtimeConfig: {
-    springBootServerApi: "http://localhost:8080",
-    public: {
-      appUrl: "http://localhost:3000",
-      apiUrl: "http://localhost:8080",
     },
-  },
-  imports: {
-    dirs: ["stores"]
+    css: [
+        "@mdi/font/css/materialdesignicons.min.css",
+        "assets/main.css",
+        "solana-wallets-vue/styles.css"
 
-  },
-  tailwindcss: {
-    viewer: false,
+    ],
+
+    ssr: false,
+    devtools: {enabled: false},
+    modules: [
+        "@nuxtjs/tailwindcss",
+        "@pinia/nuxt",
+        "nuxt-icon",
+        "@nuxtjs/i18n",
+        '@vueuse/nuxt'
 
 
-  },
+    ],
+
+    i18n: {
+        vueI18n: "i18n.config.ts", // if you are using custom path, default
+    },
+    pinia: {
+        autoImports: ["defineStore", "storeToRefs"],
+        storesDirs: ["~/stores"],
+    },
+    runtimeConfig: {
+        public: {
+            apiUrl: process.env.NUXT_SPRING_BOOT_SERVER_API || "http://localhost:8080",
+            ENV: process.env.ENV || "dev",
+        },
+    },
+    appConfig:{
+      nuxt: {
+
+      }
+    },
+
+    imports: {
+        dirs: ["stores"]
+
+    },
+    tailwindcss: {
+        viewer: false,
+
+    },
+
+    vite: {
+        esbuild: {
+            target: "esnext",
+        },
+        build: {
+            target: "esnext",
+        },
+        optimizeDeps: {
+            include: ["@project-serum/anchor", "@solana/web3.js", "buffer"],
+            esbuildOptions: {
+                target: "esnext",
+            },
+        },
+        define: {
+            "process.env.BROWSER": true,
+        }
+
+    },
 });
