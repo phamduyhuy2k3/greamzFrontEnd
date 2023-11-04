@@ -3,7 +3,7 @@
     <div class="relative">
       <SfLink href="#" class="block ">
         <img
-            src="/img/capsule_616x353 (5).jpg"
+            src="/img/capsule_616x353%20(5).jpg"
             alt="Great product"
             class="rounded-md"
             height="150"
