@@ -5,6 +5,7 @@
 <script setup>
 const route=useRoute();
 const router=useRouter();
+
 if(route.query?.token){
 
   router.push({

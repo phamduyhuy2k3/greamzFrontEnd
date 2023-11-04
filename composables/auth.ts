@@ -4,7 +4,7 @@ import type UserPayloadInterface from "~/types";
 import type UserRegisterForm from "~/types";
 
 export const API_BASE_URL = 'http://localhost:8080';
-export const OAUTH2_REDIRECT_URI = 'https://greamz.games/oauth2/redirect'
+export const OAUTH2_REDIRECT_URI = 'https://greamz.games/oauth2/redirect';
 export const GOOGLE_AUTH_URL = API_BASE_URL + '/oauth2/authorize/google?redirect_uri=' + OAUTH2_REDIRECT_URI;
 export const useAuthStore = defineStore("auth", () => {
     const config = useRuntimeConfig();
@@ -31,7 +31,7 @@ export const useAuthStore = defineStore("auth", () => {
         if (data.value) {
             token.value = data?.value.accessToken;
             useCookie("accessToken").value = data?.value.accessToken;
-            console.log(data?.value.accessToken)
+            loading.value=false
             getUserProfile().then(() => {
                 authenticated.value = true;
             });
@@ -60,6 +60,7 @@ export const useAuthStore = defineStore("auth", () => {
         if (data.value) {
             token.value = data?.value.accessToken;
             useCookie("accessToken").value = data?.value.accessToken;
+            loading.value=false
             getUserProfile().then(() => {
                 authenticated.value = true;
             });
