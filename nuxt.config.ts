@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ["vuetify"],
   },
-  ssr: false,
+  ssr: true,
   devtools: { enabled: false },
   modules: [
       "@nuxtjs/tailwindcss",
