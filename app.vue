@@ -25,22 +25,13 @@ useHead(() => {
     link:{
       rel: "stylesheet",
       href: "https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong|Nunito",
-    },
-    script:{
-      src:"https://www.googletagmanager.com/gtag/js?id=G-SZELXWHR5V",
-
-
     }
   };
 });
 onMounted(async () => {
   initFlowbite();
   window.addEventListener('resize', handleResize);
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-SZELXWHR5V');
 })
 
 useState('isMobile',()=>window.innerWidth<1025);

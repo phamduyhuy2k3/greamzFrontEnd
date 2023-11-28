@@ -26,11 +26,13 @@ export default defineNuxtConfig({
         "@pinia/nuxt",
         "nuxt-icon",
         "@nuxtjs/i18n",
-        '@vueuse/nuxt'
-
-
+        '@vueuse/nuxt',
+        'nuxt-gtag'
     ],
 
+    gtag: {
+        id: 'G-SZELXWHR5V'
+    },
     i18n: {
         vueI18n: "i18n.config.ts", // if you are using custom path, default
     },
