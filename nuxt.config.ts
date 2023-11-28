@@ -64,7 +64,7 @@ export default defineNuxtConfig({
     },
 
     vite: {
-        plugins: [vue()],
+
         esbuild: {
             target: "esnext",
         },
