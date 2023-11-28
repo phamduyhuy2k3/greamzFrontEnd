@@ -277,39 +277,39 @@ export const useCart = defineStore("cartStore", () => {
                         console.log(error)
                         return false;
                     })
-                if(result!==false){
-
-                    await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/checkout/callback`,{
-                        method: "GET",
-                        query:{
-                            orderId: order.value.id
-                        }
-                    })
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Payment successful',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }else {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: 'Payment failed',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/checkout/failed`,{
-                        method: "GET",
-                        query:{
-                            orderId: order.value.id
-                        }
-                    })
-
-                }
-                loadingPayment.value = false;
-                return result;
+                // if(result!==false){
+                //
+                //     await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/checkout/callback`,{
+                //         method: "GET",
+                //         query:{
+                //             orderId: order.value.id
+                //         }
+                //     })
+                //     Swal.fire({
+                //         position: 'center',
+                //         icon: 'success',
+                //         title: 'Payment successful',
+                //         showConfirmButton: false,
+                //         timer: 1500
+                //     })
+                // }else {
+                //     Swal.fire({
+                //         position: 'center',
+                //         icon: 'error',
+                //         title: 'Payment failed',
+                //         showConfirmButton: false,
+                //         timer: 1500
+                //     })
+                //     await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/checkout/failed`,{
+                //         method: "GET",
+                //         query:{
+                //             orderId: order.value.id
+                //         }
+                //     })
+                //
+                // }
+                // loadingPayment.value = false;
+                break;
 
             default:
                 loadingPayment.value = false;
