@@ -1,6 +1,5 @@
 <template>
   <div class="mx-auto text-white">
-    <BreadCrumb  :breadcrumbs="breadcrumbs"></BreadCrumb>
     <h1 class="font-bold text-[2.5rem] mt-3 uppercase">
       {{ $t('cart.yspc') }}
     </h1>
@@ -17,7 +16,7 @@
       <div class="grid grid-rows-2 xl:grid-cols-12">
         <div  class="xl:col-span-8 h-full relative cart_container">
 
-          <div class="flex flex-col">
+          <div v-if="!loading" class="flex flex-col">
             <LazyGameCardHorizonal v-for="cart in getItems" :item="cart" class="mt-3"/>
             <button v-if="toggleCart" class="mx-auto" @click="handleToggleCart()">
 
@@ -29,6 +28,9 @@
 <!--              </div>-->
 <!--            </template>-->
 
+          </div>
+          <div v-else class="flex justify-center items-center h-[50vh]">
+            <n-spin size="large"/>
           </div>
 
         </div>
@@ -43,12 +45,19 @@
 <script setup>
 
 const toggleCart = ref(false);
+const {fetch}=useCart()
+
 const {getItems}=storeToRefs(useCart())
 
 const handleToggleCart = () => {
   toggleCart.value = !toggleCart.value;
 };
-const {breadcrumbs}= userBreadCrumb();
+const loading = ref(true);
+onMounted(()=>{
+  fetch().then(()=>{
+    loading.value=false
+  })
+})
 
 </script>
 

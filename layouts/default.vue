@@ -14,15 +14,8 @@
     </div>
   </div>
   <main  class="w-full xl:w-[90%] min-h-[880px] md:w-[96%] mx-auto  pb-6"  >
-    <suspense>
       <slot>
       </slot>
-      <template #fallback>
-        <div class="flex justify-center items-center h-[50vh]">
-          <n-spin size="large" />
-        </div>
-      </template>
-    </suspense>
   </main>
 
   <Footer></Footer>

@@ -18,8 +18,6 @@ export const useCart = defineStore("cartStore", () => {
     const loadingPayment = ref(false);
 
     const addToCart = async (item, amount = 1) => {
-
-
         const result = await add(item, amount)
         if (!result) {
             Swal.fire({

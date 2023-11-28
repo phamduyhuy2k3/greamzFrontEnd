@@ -43,9 +43,9 @@ export default defineNuxtConfig({
         storesDirs: ["~/stores"],
     },
     runtimeConfig: {
-        apiBaseUrl: process.env.API_BASE_URL || "http://localhost:8080",
+        apiBaseUrl: process.env.NUXT_API_BASE_URL || "http://localhost:8080/",
         public: {
-            ENV: process.env.ENV || "dev",
+            ENV: process.env.NUXT_ENV || "dev",
             appUrl: process.env.NUXT_APP_URL || "http://localhost:3000",
         },
     },
@@ -64,9 +64,7 @@ export default defineNuxtConfig({
 
 
     },
-
     vite: {
-
         esbuild: {
             target: "esnext",
         },
