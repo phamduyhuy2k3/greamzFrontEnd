@@ -274,6 +274,7 @@ export const useCart = defineStore("cartStore", () => {
                     return order.value.id;
                 })
                     .catch( (error) => {
+                        console.log(error)
                         return false;
                     })
                 if(result!==false){

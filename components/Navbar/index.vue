@@ -10,10 +10,9 @@
       </NuxtLink>
       <div class="dropdown dropdown-hover bg-transparent dropdown-bottom">
         <label tabindex="0"
-               data-collapse-toggle="mega-menu-full-dropdown"
-               data-dropdown-trigger="hover"
+               @click="showCategoriesDropdown=!showCategoriesDropdown"
                class="btn border-0 bg-transparent  hover:b  m-1 px-4 text-sm font-medium font-black text-white rounded-l-lg focus:z-10 focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500"
-               aria-controls="mega-menu-full-dropdown" aria-expanded="false"
+
 
         >
           {{ $t("navbar.categories") }}
@@ -46,7 +45,7 @@
 
       </div>
     </div>
-    <ul id="mega-menu-full-dropdown"   class="hidden absolute p-2 left-0 right-0 shadow rounded-box flex flex-row  justify-center "
+    <ul v-show="showCategoriesDropdown"  class="absolute p-2 left-0 right-0 shadow rounded-box flex flex-row  justify-center "
         style="background: linear-gradient(90deg, rgba(33, 162, 255, 0.1) 1.89%, rgba(50, 50, 51, 0) 50%), linear-gradient(180deg, #575860 11.6%, #3A4852 54.73%, #2C2D34 100%);">
       <li class="">
         <div class="p-4 pb-0 text-gray-900 md:pb-4 dark:text-white w-auto">
@@ -104,6 +103,7 @@ const isMobile = useState('isMobile')
 watch([inputValue], () => {
   search()
 })
+const showCategoriesDropdown=ref(false);
 const search = async () => {
   if (inputValue.value === "") {
     searchResults.value = null
