@@ -15,8 +15,7 @@ import {
     VersionedTransaction,
     PublicKey,
 } from '@solana/web3.js';
-import base58 from "bs58";
-import {AbortSignal} from "abort-controller";
+
 const MY_PUBLIC_KEY= new PublicKey("4YnBJVkThFnwhitZgJ9rY5eKM2yC74AwnS9Ewf1nWUGR")
 export const sendOneLamportToRandomAddress =async (vnd: number) => {
 
