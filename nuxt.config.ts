@@ -1,6 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-
+import vue from '@vitejs/plugin-vue'
+import path from 'path'
+import inject from '@rollup/plugin-inject'
 export default defineNuxtConfig({
     app: {
         head:{
@@ -62,11 +64,15 @@ export default defineNuxtConfig({
     },
 
     vite: {
+        plugins: [vue()],
         esbuild: {
             target: "esnext",
         },
         build: {
             target: "esnext",
+            rollupOptions: {
+                plugins: [inject({ Buffer: ['buffer', 'Buffer'] })],
+            },
         },
         optimizeDeps: {
             include: [ "@solana/web3.js", "buffer"],
@@ -74,8 +80,14 @@ export default defineNuxtConfig({
                 target: "esnext",
             },
         },
+        resolve: {
+            alias: {
+                '@': path.resolve(__dirname, 'src'),
+            }
+        },
         define: {
             "process.env.BROWSER": true,
+            "process.env.ENV": process.env.ENV || "dev",
         }
 
     },
