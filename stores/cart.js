@@ -309,7 +309,7 @@ export const useCart = defineStore("cartStore", () => {
 
                 }
                 loadingPayment.value = false;
-                return result;
+                break
 
             default:
                 loadingPayment.value = false;
