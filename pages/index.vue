@@ -24,7 +24,12 @@ useHead({
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m8.086 17.5l5.5-5.5l-5.5-5.5L9.5 5.086L16.414 12L9.5 18.914L8.086 17.5Z"/></svg>
       </div>
       <div class="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
-        <LazySpecialOffer/>
+        <suspense>
+          <LazySpecialOffer/>
+          <template #fallback>
+            <n-spin size="large"/>
+          </template>
+        </suspense>
       </div>
     </section>
 
@@ -36,7 +41,12 @@ useHead({
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m8.086 17.5l5.5-5.5l-5.5-5.5L9.5 5.086L16.414 12L9.5 18.914L8.086 17.5Z"/></svg>
       </div>
       <div class="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-2 gap-4">
-        <LazyTopSeller/>
+        <suspense>
+          <LazyTopSeller/>
+          <template #fallback>
+            <n-spin size="large"/>
+          </template>
+        </suspense>
       </div>
     </section>
     <section class="mt-8 w-full">
@@ -47,7 +57,12 @@ useHead({
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m8.086 17.5l5.5-5.5l-5.5-5.5L9.5 5.086L16.414 12L9.5 18.914L8.086 17.5Z"/></svg>
       </div>
       <div class="w-full">
-        <LazyReviewSlider/>
+        <suspense>
+          < <LazyReviewSlider/>/>
+          <template #fallback>
+            <n-spin size="large"/>
+          </template>
+        </suspense>
       </div>
 
     </section>

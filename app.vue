@@ -24,7 +24,7 @@ onMounted(async () => {
   await fetch();
 
 })
-if(config.public.ENV=='production'){
+if(config.public.ENV!='dev'){
   console.log=function(){};
 }
 

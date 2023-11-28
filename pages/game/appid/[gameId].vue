@@ -9,6 +9,7 @@ definePageMeta({
   }
 })
 const {addToCart} = useCart()
+const {getAuthenticated}=useAuthStore()
 const {getGameDetails} = useGameService()
 let gameDetail;
 const videoEl = ref(null);
@@ -83,9 +84,21 @@ function handleOnChange(event) {
   const nextValue = parseFloat(currentValue);
   set(clamp(nextValue, min.value, max.value));
 }
-const onPlayVideoWhenLoad=(event)=>{
-  event.target.play()
+async function AddToCart() {
+  if(!getAuthenticated){
+    navigateTo({
+      path:'/login',
+      query:{
+        message:'Please login to add to cart',
+        alert:'info'
+      }
+    })
+    return
+  }
+  await addToCart(gameDetailToAdd.value, count.value)
+  count.value = 1
 }
+
 useSeoMeta({
   title: gameDetail.name,
   ogTitle: gameDetail.name,
@@ -307,7 +320,7 @@ const changeIndex = (current,last) => {
                 {{ gameDetailToAdd.platform.stock }} pieces available
               </div>
             </div>
-            <button class="w-[85%] mx-auto h-[55px] bg-[#ff346d] rounded hover:bg-red-200" @click="addToCart(gameDetailToAdd,count); count=1">
+            <button class="w-[85%] mx-auto h-[55px] bg-[#ff346d] rounded hover:bg-red-200" @click="AddToCart">
               Add to cart
             </button>
           </div>
