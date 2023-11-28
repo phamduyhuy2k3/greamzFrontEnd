@@ -1,16 +1,6 @@
-<template>
-
-  <NuxtLayout>
-    <NuxtLoadingIndicator >
-
-    </NuxtLoadingIndicator>
-    <n-message-provider >
-      <NuxtPage ref="page" />
-    </n-message-provider>
-  </NuxtLayout>
-</template>
 <script setup>
 import {initFlowbite} from "flowbite";
+
 const config=useRuntimeConfig();
 const target = ref(null)
 useHead(() => {
@@ -33,16 +23,23 @@ onMounted(async () => {
   window.addEventListener('resize', handleResize);
 
 })
-
 useState('isMobile',()=>window.innerWidth<1025);
 const handleResize=()=> {
   const result= useState('isMobile');
   result.value=window.innerWidth<1025;
   console.log(result.value);
 }
-
-
 </script>
+<template>
+  <NuxtLayout>
+    <NuxtLoadingIndicator >
+    </NuxtLoadingIndicator>
+    <n-message-provider >
+      <NuxtPage ref="page" />
+    </n-message-provider>
+  </NuxtLayout>
+</template>
+
 <style>
 
 </style>
