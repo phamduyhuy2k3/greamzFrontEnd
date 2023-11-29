@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     ],
 
     gtag: {
-        id: 'G-SZELXWHR5V'
+        id: 'G-3GKD1BQFGF'
     },
     i18n: {
         vueI18n: "i18n.config.ts", // if you are using custom path, default
