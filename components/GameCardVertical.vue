@@ -1,7 +1,7 @@
 <template>
   <div class="rounded-md hover:shadow-lg max-w-[400px] " style="">
     <div class="relative">
-      <NuxtLink :to="'/'+game.appid" class="">
+      <NuxtLink :to="'/game/'+game.appid" class="">
         <img
             :src="game.header_image"
             alt="Great product"

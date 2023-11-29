@@ -1,3 +1,119 @@
+<script setup>
+import {computed, ref} from 'vue';
+import {SfScrollable, SfButton, SfIconChevronLeft, SfIconChevronRight,} from '@storefront-ui/vue';
+import {SfCounter, SfLink, SfRating, SfIconSell, SfIconAdd, SfIconRemove, useId,} from '@storefront-ui/vue';
+import {clamp} from '@storefront-ui/shared';
+import {useCounter} from '@vueuse/core';
+definePageMeta({
+  breadcrumb: "Game Detail",
+  validate: (route) => {
+    return /^\d+$/.test(route.params.gameId)
+  }
+})
+const {breadcrumbs} = userBreadCrumb();
+const {isOutOfStock,addToCart,countItemIsInCartByPlatFormId}=useCart()
+let gameDetail;
+const charLimit = 800;
+const isCollapsed = ref(true);
+const isButtonVisible = computed(() =>{
+  const textAbout=detailDescription.value.ops.map((text) => text.insert).join('')
+  return  textAbout.length > charLimit;
+})
+const isTextNull = computed(() =>{
+  const textAbout=detailDescription.value.ops.map((text) => text.insert).join('')
+  return  textAbout.length <2;
+})
+const plafomIds = ref(null)
+const categoryIds = ref(null)
+const aboutDescription = ref('')
+const detailDescription = ref('')
+const shortDescription = ref('')
+const gameId = useRoute().params.gameId
+const gameDetailToAdd = ref(null)
+const {data, pending, error} = await useAsyncData('gameDetail',
+    () =>
+        $fetch(`${useRuntimeConfig().public.apiUrl}/api/v1/game/detail/${gameId}`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+)
+if (!data?.value) {
+  throw createError({
+    statusCode: 404,
+    message: 'Game not found',
+    statusMessage: 'Game not found'
+  })
+} else {
+  gameDetail = toReactive(data.value)
+  gameDetailToAdd.value = {
+    appid: gameDetail.appid,
+    name: gameDetail.name,
+    price: gameDetail.price,
+    discount: gameDetail.discount,
+    header_image: gameDetail.header_image,
+    platform: gameDetail.platforms[0],
+  }
+  aboutDescription.value = JSON.parse(gameDetail.about_the_game)
+  detailDescription.value = JSON.parse(gameDetail.detailed_description)
+  shortDescription.value = JSON.parse(gameDetail.short_description)
+  plafomIds.value=gameDetail.platforms.map((pl)=>pl.id)
+  categoryIds.value=gameDetail.categories.map((cate)=>cate.id)
+
+}
+const truncatedContent = computed(() =>{
+  const textAbout=detailDescription.value.ops.map((text) => text.insert).join('')
+  return  isButtonVisible.value && isCollapsed.value ?
+      `${textAbout.substring(0, charLimit)}...`
+      : textAbout
+});
+const videoEl = ref(null);
+const activeIndex = ref(0);
+const onDragged = (event) => {
+  if (event.swipeRight && activeIndex.value > 0) {
+    activeIndex.value -= 1;
+  } else if (event.swipeLeft && activeIndex.value < gameDetail.movies.length + gameDetail.images.length - 2) {
+    activeIndex.value += 1;
+  }
+};
+const next = () => {
+  if (activeIndex.value < gameDetail.movies.length + gameDetail.images.length - 1) {
+    activeIndex.value += 1;
+  } else {
+    activeIndex.value = 0
+  }
+  if (videoEl) videoEl.pause();
+};
+const prev = () => {
+  if (activeIndex.value > 0) {
+    activeIndex.value -= 1;
+  } else {
+    activeIndex.value = gameDetail.movies.length + gameDetail.images.length - 1
+  }
+  if (videoEl) videoEl.pause();
+};
+const onchangeVideo = (event) => {
+  videoEl.value = event.target
+}
+const changeIndex = (index) => {
+  activeIndex.value = index;
+  if (videoEl) videoEl.pause();
+};
+
+
+const inputId = useId();
+const min = ref(1);
+const max = ref(gameDetail.stock);
+const {count, inc, dec, set} = useCounter(1, {min: min.value, max: max.value});
+
+function handleOnChange(event) {
+  const currentValue = (event.target)?.value;
+  const nextValue = parseFloat(currentValue);
+  set(clamp(nextValue, min.value, max.value));
+}
+</script>
 <template>
   <div class="mx-auto w-[80%] text-white">
     <BreadCrumb :breadcrumbs="breadcrumbs"></BreadCrumb>
@@ -264,140 +380,7 @@
   </div>
 </template>
 
-<script setup>
 
-import {computed, ref} from 'vue';
-import {
-  SfScrollable,
-  SfButton,
-  SfIconChevronLeft,
-  SfIconChevronRight,
-} from '@storefront-ui/vue';
-import {
-  SfCounter,
-  SfLink,
-  SfRating,
-  SfIconSell,
-  SfIconShoppingCart,
-  SfIconAdd,
-  SfIconRemove,
-  useId,
-  SfIconShoppingCartCheckout,
-} from '@storefront-ui/vue';
-import {clamp} from '@storefront-ui/shared';
-import {useCounter} from '@vueuse/core';
-definePageMeta({
-  breadcrumb: "Game Detail",
-  validate: (route) => {
-    return /^\d+$/.test(route.params.gameId)
-  }
-})
-const {breadcrumbs} = userBreadCrumb();
-const {isOutOfStock,addToCart,countItemIsInCartByPlatFormId}=useCart()
-let gameDetail;
-const charLimit = 800;
-const isCollapsed = ref(true);
-const isButtonVisible = computed(() =>{
-  const textAbout=detailDescription.value.ops.map((text) => text.insert).join('')
-  return  textAbout.length > charLimit;
-})
-const isTextNull = computed(() =>{
-  const textAbout=detailDescription.value.ops.map((text) => text.insert).join('')
-  return  textAbout.length <2;
-})
-const plafomIds = ref(null)
-const categoryIds = ref(null)
-const aboutDescription = ref('')
-const detailDescription = ref('')
-const shortDescription = ref('')
-const gameId = useRoute().params.gameId
-const gameDetailToAdd = ref(null)
-const {data, pending, error} = await useAsyncData('gameDetail',
-    () =>
-          $fetch(`${useRuntimeConfig().public.apiUrl}/api/v1/game/detail/${gameId}`,
-              {
-                method: 'GET',
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-              })
-)
-if (!data?.value) {
-  throw createError({
-    statusCode: 404,
-    message: 'Game not found',
-    statusMessage: 'Game not found'
-  })
-} else {
-  gameDetail = toReactive(data.value)
-  gameDetailToAdd.value = {
-    appid: gameDetail.appid,
-    name: gameDetail.name,
-    price: gameDetail.price,
-    discount: gameDetail.discount,
-    header_image: gameDetail.header_image,
-    platform: gameDetail.platforms[0],
-  }
-  console.log(gameDetail)
-  aboutDescription.value = JSON.parse(gameDetail.about_the_game)
-  detailDescription.value = JSON.parse(gameDetail.detailed_description)
-  shortDescription.value = JSON.parse(gameDetail.short_description)
-  plafomIds.value=gameDetail.platforms.map((pl)=>pl.id)
-  categoryIds.value=gameDetail.categories.map((cate)=>cate.id)
-  console.log(plafomIds.value)
-  console.log(categoryIds.value)
-}
-const truncatedContent = computed(() =>{
-  const textAbout=detailDescription.value.ops.map((text) => text.insert).join('')
-  return  isButtonVisible.value && isCollapsed.value ?
-      `${textAbout.substring(0, charLimit)}...`
-      : textAbout
-});
-const videoEl = ref(null);
-const activeIndex = ref(0);
-const onDragged = (event) => {
-  if (event.swipeRight && activeIndex.value > 0) {
-    activeIndex.value -= 1;
-  } else if (event.swipeLeft && activeIndex.value < gameDetail.movies.length + gameDetail.images.length - 2) {
-    activeIndex.value += 1;
-  }
-};
-const next = () => {
-  if (activeIndex.value < gameDetail.movies.length + gameDetail.images.length - 1) {
-    activeIndex.value += 1;
-  } else {
-    activeIndex.value = 0
-  }
-  if (videoEl) videoEl.pause();
-};
-const prev = () => {
-  if (activeIndex.value > 0) {
-    activeIndex.value -= 1;
-  } else {
-    activeIndex.value = gameDetail.movies.length + gameDetail.images.length - 1
-  }
-  if (videoEl) videoEl.pause();
-};
-const onchangeVideo = (event) => {
-  videoEl.value = event.target
-}
-const changeIndex = (index) => {
-  activeIndex.value = index;
-  if (videoEl) videoEl.pause();
-};
-
-
-const inputId = useId();
-const min = ref(1);
-const max = ref(gameDetail.stock);
-const {count, inc, dec, set} = useCounter(1, {min: min.value, max: max.value});
-
-function handleOnChange(event) {
-  const currentValue = (event.target)?.value;
-  const nextValue = parseFloat(currentValue);
-  set(clamp(nextValue, min.value, max.value));
-}
-</script>
 
 <style scoped>
 

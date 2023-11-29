@@ -27,14 +27,14 @@
     </button>
     <footer class="flex items-center justify-between">
       <div class="text-sm text-neutral-500">
-        <button type="button" class="mr-6 hover:text-primary-800">
-          <SfIconThumbUp size="sm" class="mr-2.5" />
-          <SfCounter  size="sm" class="text-white">{{review.likes}}</SfCounter>
+        <button type="button"  @click="reaction(reviewRef.reacted,'LIKE')"   :class=" reviewRef.reacted&&reviewRef.reactionType==='LIKE'? 'text-[#3b82f6]' :'text-white'" class="mr-6 hover:text-primary-800 ">
+          <SfIconThumbUp  size="sm" class="mr-2.5 " />
+          <SfCounter  size="sm" class="text-white">{{reviewRef.likes}}</SfCounter>
 
         </button>
-        <button type="button" class="hover:text-primary-800">
-          <SfIconThumbDown size="sm" class="mr-2.5" />
-          <SfCounter size="sm" class="text-white">{{review.dislikes}}</SfCounter>
+        <button type="button"  @click="reaction(reviewRef.reacted,'DISLIKE')" :class="reviewRef.reacted&&reviewRef.reactionType==='DISLIKE'?'text-[#3b82f6]' :'text-white'" class="hover:text-primary-800">
+          <SfIconThumbDown    size="sm" class="mr-2.5" />
+          <SfCounter size="sm" class="text-white">{{reviewRef.dislikes}}</SfCounter>
         </button>
       </div>
 
@@ -55,12 +55,52 @@ const {review}= defineProps({
     default: () => ({}),
   }
 });
+
+console.log(review)
+const reviewRef=ref({
+  reacted: review.reacted,
+  reactionType: review.reactionType,
+  likes: review.likes,
+  dislikes: review.dislikes,
+})
 const charLimit = 300;
 const isCollapsed = ref(true);
 const isButtonVisible = computed(() => review.text.length > charLimit);
 const truncatedContent = computed(() =>
     isButtonVisible.value && isCollapsed.value ? `${review.text.substring(0, charLimit)}...` : review.text,
 );
+const config=useRuntimeConfig()
+const reaction=async (isReacted,reactType)=>{
+  console.log(isReacted,reactType)
+  const {userProfile}=useAuthStore()
+  console.log(userProfile)
+  if(!userProfile){
+    alert('Please login to react the review')
+    return
+  }
+  const payload={
+    isReacted: isReacted,
+    reactionType: reactType,
+    reviewId: review.id,
+    userId: userProfile.id,
+  }
+
+  const {data}=await useAsyncData('reactTheReview_'+Math.random()*10000,
+      ()=>
+          $fetch(`${config.public.apiUrl}/api/v1/review/react`,{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer '+useAuthStore().token,
+            },
+            body: JSON.stringify(payload)
+          }),
+  )
+  console.log(data.value)
+  if(data.value){
+    reviewRef.value=data.value
+  }
+}
 </script>
 
 <style scoped>

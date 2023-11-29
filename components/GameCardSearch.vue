@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="`/${item.appid}`" class="flex flex-col bg-[#1f254a] hover:shadow-lg p-4 pt-2">
+  <NuxtLink :to="`/game/${item.appid}`" class="flex flex-col bg-[#1f254a] hover:shadow-lg p-4 pt-2">
     <div class="relative overflow-hidden rounded-md w-full ">
       <SfLink href="#">
         <img
