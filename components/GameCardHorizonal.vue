@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col md:flex-row bg-[#1f254a] hover:shadow-lg p-0 p-4">
     <div class="relative overflow-hidden rounded-md w-full xl:w-[250px] ">
-      <SfLink :tag="NuxtLink" :to="'/'+item.appid" >
+      <SfLink :tag="NuxtLink" :to="'/game/'+item.appid" >
         <img
             class="w-full h-[190px] xl:h-[120px]  rounded-md "
             :src="item.header_image"
@@ -17,7 +17,7 @@
     </div>
     <div class="flex flex-col pl-4 min-w-[180px] flex-1">
       <div>
-        <SfLink :tag="NuxtLink" :to="'/'+item.appid"  variant="secondary" class="no-underline text-lg typography-text-sm sm:typography-text-lg">
+        <SfLink :tag="NuxtLink" :to="'/game/'+item.appid"  variant="secondary" class="no-underline text-lg typography-text-sm sm:typography-text-lg">
           {{ item.name }}
         </SfLink>
         <div class="my-2 sm:mb-0">

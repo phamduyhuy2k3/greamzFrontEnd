@@ -30,10 +30,14 @@
     <tr v-for="order in orderData" :key="order.id"
         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
       <td class="flex items-center justify-center">
-        <img class="w-20 h-10" :src="order.game.header_image" :alt="`orderDetail_${order.id}`">
+        <NuxtLink :to="'/game/'+order.game.appid">
+          <img class="w-20 h-10" :src="order.game.header_image" :alt="`orderDetail_${order.id}`">
+        </NuxtLink>
       </td>
       <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-        {{ order.game.name }}
+        <NuxtLink :to="'/game/'+order.game.appid">
+          {{ order.game.name }}
+        </NuxtLink>
       </th>
       <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
         {{ order.platform.name }}

@@ -87,7 +87,6 @@ export default defineNuxtConfig({
         },
         define: {
             "process.env.BROWSER": true,
-            "process.env.ENV": process.env.ENV || "dev",
         }
 
     },
