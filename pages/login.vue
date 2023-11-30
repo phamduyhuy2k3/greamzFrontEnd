@@ -32,7 +32,7 @@
         {{ useRoute().query.message }}
       </n-alert>
       <n-alert v-if="isInvalid&& !loading" type="error">
-        Invalid username or password
+        {{error}}
       </n-alert>
       <form class="mt-8 space-y-6" @submit.prevent="login()">
         <div>
@@ -193,15 +193,22 @@ const oauthLogin = async (url) => {
 
 
 }
-
+const error = ref("");
 const login = async () => {
   loading.value = true;
 
   await authenticateUser(loginForm).then((res) => {
+    if(res==="Your account is disabled. Please contact the administrator"){
+      isInvalid.value = true;
+      error.value = res;
+      loading.value = false;
+      return;
+    }
     if (res) {
       useRouter().push({path: '/', query: {message: 'Login successfully', alert: 'success'}})
     } else {
       isInvalid.value = true;
+      error.value = "Username or password is incorrect";
     }
     loading.value = false;
   })

@@ -32,6 +32,10 @@ export const useAuthStore = defineStore("auth", () => {
         );
         loading.value = pending;
         if (error.value) {
+            console.log()
+            if(error.value.data.error==="User is disabled"){
+                return "Your account is disabled. Please contact the administrator";
+            }
             loading.value = false;
             authenticated.value = false;
             return false;
@@ -95,6 +99,7 @@ export const useAuthStore = defineStore("auth", () => {
             console.log(userProfile.value)
             return true;
         } else if (error.value) {
+            console.log(error)
             loading.value = false
             return false;
         } else {
