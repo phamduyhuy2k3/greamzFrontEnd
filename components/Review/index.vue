@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center justify-center gap-3 relative" v-if="reviews.length>0||!paggeAble.empty">
+  <div id="review" class="flex flex-col items-center justify-center gap-3 relative" v-if="reviews.length>0||!paggeAble.empty">
     <ReviewItem v-for="review in reviews" :key="review.id" :review="review"/>
     <SfButton v-if="!paggeAble.last" @click="fetchReviews(paggeAble.number+1)" size="lg"
               class="bg-[#ff346d] hover:bg-[#3b82f6] p-2">View more reviews
@@ -21,7 +21,6 @@ const reviews = ref([])
 const paggeAble = ref(null)
 const {userProfile} = useAuthStore()
 const fetchReviews = async (page = 0) => {
-  console.log("user:", userProfile?.id)
   const payload = userProfile?.id ?
       {
         page: page,

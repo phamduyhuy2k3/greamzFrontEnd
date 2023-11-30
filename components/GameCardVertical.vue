@@ -32,13 +32,14 @@
 <!--      </div>-->
 
 
-      <div class="flex flex-col  text-white">
-        <div class="text-[1.2rem]  text-center  ">
-          {{ game.name }}
-        </div>
-        <div class="text-[1.2rem] text-center">
-          {{ $currency(game.price) }}
-        </div>
+
+    </div>
+    <div class="flex flex-col  text-white">
+      <div class="text-[1.2rem]  text-center  ">
+        {{ game.name }}
+      </div>
+      <div class="text-[1.2rem] text-center">
+        {{ $currency(game.price) }}
       </div>
     </div>
   </div>

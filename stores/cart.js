@@ -310,7 +310,19 @@ export const useCart = defineStore("cartStore", () => {
                 }
                 loadingPayment.value = false;
                 return result;
-
+            case "FREE":
+                order.value = {
+                    ...order.value,
+                    id: data.value.orderId
+                }
+                const {data: dataCallBack}= await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/checkout/callback/client`,{
+                    method: "GET",
+                    query:{
+                        orderId: order.value.id
+                    }
+                })
+                window.location.href = dataCallBack.value
+                break
             default:
                 loadingPayment.value = false;
                 alert('Payment method not supported')

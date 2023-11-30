@@ -116,7 +116,7 @@ function handleOnChange(event) {
 </script>
 <template>
   <div class="mx-auto w-[80%] text-white">
-    <BreadCrumb :breadcrumbs="breadcrumbs"></BreadCrumb>
+
     <div class="xl:grid  xl:grid-cols-12 rounded-[2px]  gap-4 flex flex-col-reverse ">
       <div
           class="relative flex flex-col items-center justify-center w-full h-full  col-span-7 p-3 card bg-[#1f254a]">
@@ -224,15 +224,20 @@ function handleOnChange(event) {
       </div>
 
       <section class="col-span-5  bg-[#1f254a] card">
-        <div
-            class="inline-flex items-center  text-sm font-medium text-white  py-1.5 px-3 mb-4 "
-            v-if="gameDetail.discount>0"
-        >
-          <SfIconSell size="sm" class="mr-1.5"/>
-          -{{ gameDetail.discount }}%
-        </div>
-        <div class="flex flex-col justify-center p-3">
-          <img :src="gameDetail.header_image">
+
+        <div class="flex flex-col justify-center p-3 ">
+          <div class="relative">
+            <div
+                class="inline-flex items-center text-sm font-medium text-white top-0 left-0 discount py-1.5 px-3 mb-4 "
+                v-if="gameDetail.discount>0"
+            >
+              <SfIconSell size="sm" class="mr-1.5"/>
+              -{{ gameDetail.discount }}%
+            </div>
+            <img :src="gameDetail.header_image">
+          </div>
+
+
           <p class="mt-4 mb-2 text-sm text-neutral-500">
             <span v-for="text in shortDescription.ops">
               {{ text.insert }}
@@ -240,9 +245,9 @@ function handleOnChange(event) {
           </p>
 
           <div class="inline-flex items-center mt-4 mb-2">
-            <SfRating size="xs" :value="3" :max="5"/>
-            <SfCounter class="ml-1" size="xs">123</SfCounter>
-            <SfLink href="#" variant="secondary" class="ml-2 text-xs text-neutral-500"> 123 reviews</SfLink>
+            <SfRating size="xs" :value="gameDetail.averageRating" :max="5"/>
+            <SfCounter class="ml-1" size="xs">{{gameDetail.totalReviewed}}</SfCounter>
+            <SfLink href="#review" variant="secondary" class="ml-2 text-xs text-neutral-500"> {{gameDetail.totalReviewed}} reviews</SfLink>
           </div>
           <ul class="mb-4 font-normal typography-text-sm flex flex-wrap">
             <li >

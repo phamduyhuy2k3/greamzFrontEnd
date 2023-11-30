@@ -19,7 +19,7 @@
           <legend class="mb-4 typography-headline-5 font-bold text-[1.5rem]  text-white">Payment method</legend>
           <div class="grid grid-cols-2 gap-4 items-stretch relative">
             <label v-for="{ label, textValue, logo, active,text } in paymentMethods" :key="textValue" class="relative">
-              <input type="radio" name="payment-method"  class="peer absolute top-1/2 bottom-1/2 left-4" :value="textValue"
+              <input :disabled="getCartTotal<=0" type="radio" name="payment-method"  class="peer absolute top-1/2 bottom-1/2 left-4" :value="textValue"
               v-model="paymentMethod"
               />
               <div
@@ -109,7 +109,7 @@ definePageMeta({
   // or middleware: 'auth'
 })
 
-
+const {getCartTotal}=useCart()
 
 const paymentMethods = [
   {
@@ -148,7 +148,7 @@ const paymentMethods = [
   //   active: false,
   // },
 ];
-const paymentMethod = ref('PAYPAL');
+const paymentMethod = ref('');
 const promo = ref(0);
 const updatePromo= (newPromo)=>{
 

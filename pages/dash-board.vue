@@ -1,5 +1,6 @@
 <template>
   <div class="mx-auto md:w-[90%] text-white pt-16">
+    <BreadCrumb  :breadcrumbs="breadcrumbs"></BreadCrumb>
     <div class="flex justify-center items-center flex-col">
       <img class="h-28 w-28 rounded-full" :src="$state.userProfile.photo" alt="userAvatar">
       <span class="text-[2rem]">{{ $state.userProfile.username }}</span>
@@ -45,6 +46,7 @@
 </template>
 
 <script setup>
+const {breadcrumbs}= userBreadCrumb();
 const{$state}=useAuthStore()
 </script>
 

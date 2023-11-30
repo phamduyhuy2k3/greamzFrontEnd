@@ -1,5 +1,5 @@
 <template>
-  <article class="w-full p-4 border rounded-md">
+  <article class="p-4 border rounded-md">
     <header class="flex flex-col items-start pb-4 md:flex-row md:justify-between">
       <div class="flex items-start">
         <img :src="review.account.photo" alt="Review avatar" class="p-0.5 w-14 h-14 rounded-full" />
@@ -10,6 +10,7 @@
 
             {{ moment(review.createdAt).fromNow()}}
           </span>
+          <NuxtLink :to="'/game/appid/'+review.game.appid" class="text-sm text-neutral-300">{{review.game.name}}</NuxtLink>
         </div>
       </div>
       <p class="flex items-center text-xs truncate text-primary-700">
@@ -46,7 +47,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+
 import { SfRating, SfIconCheck, SfIconThumbUp, SfIconThumbDown, SfCounter } from '@storefront-ui/vue';
 import moment from "moment";
 const {review}= defineProps({
