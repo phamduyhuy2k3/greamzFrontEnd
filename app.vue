@@ -24,6 +24,9 @@ onMounted(async () => {
 
 })
 useState('isMobile',()=>window.innerWidth<1025);
+if(config.public.ENV=='production'){
+  console.log=function(){};
+}
 const handleResize=()=> {
   const result= useState('isMobile');
   result.value=window.innerWidth<1025;

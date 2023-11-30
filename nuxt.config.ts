@@ -46,6 +46,7 @@ export default defineNuxtConfig({
         public: {
             apiUrl: process.env.NUXT_SPRING_BOOT_SERVER_API || "http://localhost:8080",
             ENV: process.env.ENV || "dev",
+            appUrl: process.env.NUXT_APP_URL || "http://localhost:3000",
         },
     },
     appConfig:{

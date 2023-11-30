@@ -40,7 +40,7 @@
         <p>Total</p>
         <p>{{ $currency(getCartTotal) }}</p>
       </div>
-      <template v-if="!loading">
+      <template v-if="!loading&&getCartTotal>0">
         <SfButton v-if="paymentMethod!== 'PAYPAL' &&paymentMethod!== 'SOLANA' &&paymentMethod!==''"
                   :disabled="paymentMethod===''" @click="placeOrderMethod(paymentMethod)" size="lg"
                   class="text-white w-full bg-[#ff346d] hover:bg-[#3b82f6] ">
@@ -55,7 +55,16 @@
           <PayPalButton v-if="paymentMethod=== 'PAYPAL'"/>
         </div>
       </template>
-      <n-spin v-else class="mx-auto" size="medium" />
+      <n-spin v-else class="flex justify-center items-center" size="medium" />
+      <template v-if="!loading&&getCartTotal<=0">
+        <SfButton  @click="placeOrderMethod('FREE')" size="lg"
+                  class="text-white w-full bg-[#ff346d] hover:bg-[#3b82f6] ">
+          Checkout
+        </SfButton>
+
+
+      </template>
+
       <div class="typography-text-sm mt-4 text-center">
         By placing your order, you agree to our
         <a >Terms and Conditions</a>

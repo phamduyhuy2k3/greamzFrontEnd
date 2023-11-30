@@ -5,8 +5,6 @@ import type UserRegisterForm from "~/types";
 import {useCookie} from "nuxt/app";
 
 
-
-
 export const useAuthStore = defineStore("auth", () => {
     const config = useRuntimeConfig();
     const token = ref(useCookie('accessToken', {
