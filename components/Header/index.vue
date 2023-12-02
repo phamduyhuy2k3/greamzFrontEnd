@@ -146,7 +146,7 @@ onMounted(() => {
               </span>
             </NuxtLink>
             <template v-else>
-              <div  tabindex="0" role="button"  class=" md:inline-flex  items-center xl:mr-2 font-medium justify-center xl:px-4 xl:py-2 text-sm text-gray-900 rounded-lg cursor-pointer hover:bg-[#0ea5e9] text-white">
+              <div  tabindex="0" role="button"  class=" md:inline-flex  items-center xl:mr-2 font-medium justify-center xl:px-4 xl:py-2 text-sm text-gray-900 rounded-lg cursor-pointer hover:bg-[#0ea5e9] dark:text-white">
                 <img class="h-8 w-8 rounded-full" :src="$state.userProfile.photo" alt="userAvatar">
               </div>
               <ul tabindex="0" class="dropdown-content z-[1]  right-0 menu p-2 shadow bg-base-100 rounded-box w-52">
