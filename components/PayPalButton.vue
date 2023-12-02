@@ -41,7 +41,7 @@ const createOrder = (data, actions) => {
 
 }
 const onApprove =async  (data, actions) => {
-  await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/payment/paypal/capture`,
+   const {data:data1,status}=await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/payment/paypal/capture`,
       {
         method: "post",
         headers: {
@@ -52,9 +52,14 @@ const onApprove =async  (data, actions) => {
           orderId:useCart().getOrder.id
         }
       })
+  if(status===201){
+    window.location.href=data1.value.redirectURL
+  }else {
+    window.location.href =useRuntimeConfig().public.apiUrl+ data1.value.redirectURL;
+  }
 }
 const onError = async (err) => {
-  await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/checkout/failed`,{
+  const{status,data}= await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/checkout/failed`,{
     method: "GET",
     headers: {
       "Authorization": `Bearer ${useAuthStore().token}`

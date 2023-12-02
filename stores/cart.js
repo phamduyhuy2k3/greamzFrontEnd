@@ -132,35 +132,35 @@ export const useCart = defineStore("cartStore", () => {
         if (items.value.length > 0) {
             const ids = items.value.map(item => item.appid).join(',')
             const platformIds = items.value.map(item => item.platform.id).join(',')
-
-            console.log(ids)
-            console.log(platformIds)
-            await useFetch(`${config.public.apiUrl}/api/v1/game/gameids`, {
-                key: `updateCartFromDatabase_${Math.random()*1000}`,
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-
-                },
-                query:{
-                    appids: ids,
-                    platformIds:platformIds
-                },
-                transform: (data) => {
-                    console.log(data)
-                    items.value = items.value.map(item => {
-                        const game = data.find(game => game.appid === item.appid&&item.platform.id===game.platform.id)
-                        return {
-                            ...item,
-                            header_image: game.header_image,
-                            name: game.name,
-                            price: game.price,
-                            stock: game.stock,
-                            discount: game.discount,
+            const {data}= await useAsyncData(`update-cart`+Math.random()*1000,
+                ()=>
+                    $fetch(`${config.public.apiUrl}/api/v1/game/gameids`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        query:{
+                            appids: ids,
+                            platformIds:platformIds
                         }
                     })
-                }
-            })
+                )
+            if(data.value){
+                items.value = items.value.map(item => {
+                    const game = data.value.find(game => game.appid === item.appid)
+                    if (game) {
+                        const platform = game.platforms.find(platform => platform.id === item.platform.id)
+                        if (platform) {
+                            return {
+                                ...item,
+                                stock: platform.stock
+                            }
+                        }
+                    }
+                    return item;
+
+                })
+            }
         }
         return items.value;
     }

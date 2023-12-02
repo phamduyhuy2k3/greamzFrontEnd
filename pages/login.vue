@@ -167,15 +167,12 @@ const oauthLogin = async (url) => {
       + ', height=' + 600 + ', top='
       + top + ', left=' + left);
   const checkPopup = setInterval(async () => {
+    if (popup.closed || !popup)  clearInterval(checkPopup);
     if (popup.window.location.href.includes(OAUTH2_REDIRECT_URI)) {
       await setToken(useCookie('accessToken', {
         watch: true,
         default: () => '',
       }).value)
-      popup.close()
-    }
-    if (popup.closed || !popup) {
-
       await getUserProfile().then((res) => {
         if (res) {
           useRouter().push({path: '/', query: {message: 'Login successfully', alert: 'success'}})
@@ -183,9 +180,9 @@ const oauthLogin = async (url) => {
           isInvalid.value = true;
         }
         loading.value = false;
-        clearInterval(checkPopup);
-      })
 
+      })
+      popup.close()
     }
 
 
