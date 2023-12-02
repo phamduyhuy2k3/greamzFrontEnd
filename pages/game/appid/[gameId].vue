@@ -113,6 +113,14 @@ function handleOnChange(event) {
   const nextValue = parseFloat(currentValue);
   set(clamp(nextValue, min.value, max.value));
 }
+useSeoMeta({
+  title: gameDetail.name,
+  ogTitle: gameDetail.name,
+  description: gameDetail.short_description,
+  ogDescription: gameDetail.short_description,
+  ogImage: gameDetail.header_image,
+  twitterCard: 'summary_large_image',
+})
 </script>
 <template>
   <div class="mx-auto w-[80%] text-white">

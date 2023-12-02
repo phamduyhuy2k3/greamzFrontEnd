@@ -3,14 +3,15 @@
 </template>
 
 <script setup>
+const date=new Date()
 const config=useRuntimeConfig()
 const {data}=await useAsyncData(`topSeller`,
     ()=>
         $fetch(`${config.public.apiUrl}/api/v1/dashboard/getTopSellingClient`,{
           method:'GET',
           query:{
-            year: 2023,
-            month: 11,
+            year:date.getFullYear(),
+            month:date.getMonth()+1,
           }
         })
 );
