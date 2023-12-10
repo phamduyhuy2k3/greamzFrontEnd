@@ -168,7 +168,7 @@ const oauthLogin = async (url) => {
       + top + ', left=' + left);
   const checkPopup = setInterval(async () => {
     if (popup.closed || !popup)  clearInterval(checkPopup);
-    if (popup.window.location.href.includes(OAUTH2_REDIRECT_URI)) {
+    if (popup.window.location.href.includes('/oauth2/redirect')) {
       await setToken(useCookie('accessToken', {
         watch: true,
         default: () => '',
@@ -204,12 +204,13 @@ const login = async () => {
     if (res) {
       useRouter().push({path: '/', query: {message: 'Login successfully', alert: 'success'}})
     } else {
+      console.log("asdsadsadasd")
       isInvalid.value = true;
       error.value = "Username or password is incorrect";
     }
-    loading.value = false;
-  })
 
+  })
+  loading.value = false;
 
 };
 </script>
