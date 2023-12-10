@@ -204,12 +204,13 @@ const login = async () => {
     if (res) {
       useRouter().push({path: '/', query: {message: 'Login successfully', alert: 'success'}})
     } else {
+      console.log("asdsadsadasd")
       isInvalid.value = true;
       error.value = "Username or password is incorrect";
     }
-    loading.value = false;
-  })
 
+  })
+  loading.value = false;
 
 };
 </script>
