@@ -6,14 +6,10 @@
 const route=useRoute();
 const router=useRouter();
 const {token } = useAuthStore();
+console.log(route.query)
 if(route.query?.token){
   token.value=route.query.token;
 
-}else {
-  router.push({
-    path: "/login",
-    query: { message: "Login failed", alert: "error" },
-  });
 }
 </script>
 
