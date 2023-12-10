@@ -168,11 +168,8 @@ const oauthLogin = async (url) => {
       + top + ', left=' + left);
   const checkPopup = setInterval(async () => {
     if (popup.closed || !popup)  clearInterval(checkPopup);
-    if (popup.window.location.href.includes('/oauth2/redirect')) {
-      await setToken(useCookie('accessToken', {
-        watch: true,
-        default: () => '',
-      }).value)
+    if (popup.window.location.href.includes('')) {
+
       await getUserProfile().then((res) => {
         if (res) {
           useRouter().push({path: '/', query: {message: 'Login successfully', alert: 'success'}})
@@ -183,6 +180,7 @@ const oauthLogin = async (url) => {
 
       })
       popup.close()
+
     }
 
 

@@ -10,7 +10,9 @@ export const useAuthStore = defineStore("auth", () => {
     const token = ref(useCookie('accessToken', {
         watch: true,
         default: () => '',
+
     }))
+
     const authenticated = ref(false)
     const loading = ref(false)
     const userProfile = ref({} as UserProfile)

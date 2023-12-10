@@ -7,6 +7,7 @@ const route=useRoute();
 const router=useRouter();
 const {token } = useAuthStore();
 if(route.query?.token){
+  token.value=route.query.token;
 
 }else {
   router.push({
