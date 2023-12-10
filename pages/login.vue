@@ -168,7 +168,7 @@ const oauthLogin = async (url) => {
       + top + ', left=' + left);
   const checkPopup = setInterval(async () => {
     if (popup.closed || !popup)  clearInterval(checkPopup);
-    if (popup.window.location.href.includes('')) {
+    if (popup.window.location.href.includes('/oauth2/redirect')&&popup.window.location.href.includes('token')) {
 
       await getUserProfile().then((res) => {
         if (res) {
@@ -180,7 +180,6 @@ const oauthLogin = async (url) => {
 
       })
       popup.close()
-
     }
 
 
