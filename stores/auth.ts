@@ -10,11 +10,10 @@ export const useAuthStore = defineStore("auth", () => {
     const domain = config.public.appUrl.includes("localhost") ? "localhost" : config.public.appUrl.replace("https://", "").replace("http://", "");
     const token = ref(useCookie('accessToken', {
         watch: true,
-        domain: domain
+
     }))
     const refreshToken = ref(useCookie('refreshToken', {
         watch: true,
-        domain: domain
     }))
     const authenticated = ref(false)
     const loading = ref(false)
@@ -129,11 +128,9 @@ export const useAuthStore = defineStore("auth", () => {
     async function updateToken() {
         token.value = useCookie('accessToken', {
             watch: true,
-            domain: domain
         }).value
         refreshToken.value = useCookie('refreshToken', {
             watch: true,
-            domain: domain
         }).value
 
     }
