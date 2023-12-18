@@ -81,7 +81,9 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
     async function getUserProfile(): Promise<boolean> {
-
+        if(!authenticated||token.value===null||token.value===undefined||token.value===""){
+            return false;
+        }
         loading.value = true;
         const {data, error, pending, execute}: any = await useAsyncData('getUserProfile_' + Math.random() * 100, () =>
             $fetch(
