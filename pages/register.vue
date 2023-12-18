@@ -5,7 +5,7 @@
     >
 
       <div class="space-y- p-3">
-        <h2 class="text-2xl font-bold text-white">Register</h2>
+        <h2 class="text-2xl font-bold text-white">{{ $t('register.title') }}</h2>
         <form class="mt-8 space-y-6" @submit.prevent="sendOtpRequest()">
           <div>
             <label
@@ -39,7 +39,7 @@
               />
             </div>
             <p v-for="error of v$.fullname.$errors" :key="error.$uid">
-              <strong class="text-red-500">{{ error.$message }}</strong>
+              <strong class="text-red-500">{{ $t(error.$message) }}</strong>
             </p>
           </div>
           <div>
@@ -74,7 +74,7 @@
               />
             </div>
             <p v-for="error of v$.email.$errors" :key="error.$uid">
-              <strong class="text-red-500">{{ error.$message }}</strong>
+              <strong class="text-red-500">{{ $t(error.$message) }}</strong>
             </p>
           </div>
           <div>
@@ -109,7 +109,7 @@
               />
             </div>
             <p v-for="error of v$.username.$errors" :key="error.$uid">
-              <strong class="text-red-500">{{ error.$message }}</strong>
+              <strong class="text-red-500">{{ $t(error.$message) }}</strong>
             </p>
           </div>
           <button
@@ -237,7 +237,7 @@
               />
             </div>
             <p v-for="error of v$.password.$errors" :key="error.$uid">
-              <strong class="text-red-500">{{ error.$message }}</strong>
+              <strong class="text-red-500">{{ $t(error.$message) }}</strong>
             </p>
           </div>
           <div >
@@ -272,7 +272,7 @@
               />
             </div>
             <p v-for="error of v$.confirmPassword.$errors" :key="error.$uid">
-              <strong class="text-red-500">{{ error.$message }}</strong>
+              <strong class="text-red-500">{{ $t(error.$message) }}</strong>
             </p>
           </div>
 
@@ -352,6 +352,10 @@ const registerData = reactive({
 });
 async function isEmailExisted (value ) {
   if(!value) return true
+  const emailRegex = /^(?:[A-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9]{2,}(?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i;
+  if (!emailRegex.test(value)) {
+    return true;
+  }
   const { data, error } = await useFetch(
       config.public.apiUrl+"/api/v1/auth/validate-email/" + value,
       {
@@ -383,61 +387,61 @@ const isUsernameExisted=async (value)=> {
 const rules = computed(() => {
   return {
     fullname: {
-      required: helpers.withMessage("The fullname field is required", required),
+      required: helpers.withMessage("register.validate.require.fullname", required),
     },
     username: {
-      required: helpers.withMessage("The username field is required", required),
+      required: helpers.withMessage("register.validate.require.username", required),
       minLength: helpers.withMessage(
-        "The username must be at least 3 characters",
+        "register.validate.minLength.username",
         minLength(6),
       ),
       maxLength: helpers.withMessage(
-        "The username must be at most 18 characters",
+        "register.validate.maxLength.username",
         maxLength(18),
       ),
       isUsernameExisted: helpers.withMessage(
-        "Username is already existed",
+        "register.validate.username.isExisted",
         helpers.withAsync(isUsernameExisted),
       ),
     },
     email: {
-      required: helpers.withMessage("The email field is required", required),
-      email: helpers.withMessage("Invalid email format", email),
+      required: helpers.withMessage("register.validate.require.email", required),
+      email: helpers.withMessage("register.validate.email.invalidFormat", email),
       isEmailExisted: helpers.withMessage(
-        "Email is already existed",
+        "register.validate.email.isExisted",
         helpers.withAsync(isEmailExisted),
       ),
     },
     password: {
-      required: helpers.withMessage("The password field is required", required),
+      required: helpers.withMessage("register.validate.require.password", required),
       oneUpperCase: helpers.withMessage(
-        "The password must contain at least one uppercase letter",
+        "register.validate.oneUpperCase.password",
         oneUpperCase,
       ),
       oneSpecialChar: helpers.withMessage(
-        "The password must contain at least one special character",
+        "register.validate.oneSpecialCharacter.password",
         oneSpecialChar,
       ),
       minLength: helpers.withMessage(
-        "The password must be between 6 and 18 characters",
+        "register.validate.minLength.password",
         minLength(8),
       ),
       maxLength: helpers.withMessage(
-        "The password must be between 6 and 18 characters",
+        "register.validate.maxLength.password",
         maxLength(18),
       ),
       oneNumber: helpers.withMessage(
-        "The password must contain at least one number",
+        "register.validate.oneNumber.password",
         oneNumber,
       ),
     },
     confirmPassword: {
       required: helpers.withMessage(
-        "The password confirmation field is required",
+        "register.validate.require.confirmPassword",
         required,
       ),
       sameAs: helpers.withMessage(
-        "Passwords don't match",
+        "register.validate.sameAs.confirmPassword",
         sameAs(registerData.password),
       ),
     },

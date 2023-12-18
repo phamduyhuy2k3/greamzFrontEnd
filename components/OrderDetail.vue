@@ -30,12 +30,12 @@
     <tr v-for="order in orderData" :key="order.id"
         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
       <td class="flex items-center justify-center">
-        <NuxtLink :to="'/game/'+order.game.appid">
+        <NuxtLink :to="'/game/appid/'+order.game.appid">
           <img class="w-20 h-10" :src="order.game.header_image" :alt="`orderDetail_${order.id}`">
         </NuxtLink>
       </td>
       <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-        <NuxtLink :to="'/game/'+order.game.appid">
+        <NuxtLink :to="'/game/appid/'+order.game.appid">
           {{ order.game.name }}
         </NuxtLink>
       </th>
@@ -215,12 +215,14 @@ const reviewForm = ref({
   text: '',
   appid: null,
   orderDetailId: null,
+  platformId: null
 })
 const handleToggleModalOrderDetail = (order) => {
   console.log(order)
   gameForReview.value = order
   reviewForm.value.appid = order.game.appid
   reviewForm.value.orderDetailId = order.id
+  reviewForm.value.platformId = order.platform.id
   reviewForm.value = {
     ...reviewForm.value,
     rating: null,
@@ -246,14 +248,14 @@ const submitForm = async () => {
     message.error('Please rate this product')
     return;
   }
-  const {data, error} = await useAsyncData(`review_${Math.random() * 1000}`,
+  const {data, error,execute} = await useAsyncData(`review_${Math.random() * 1000}`,
       () =>
           $fetch(`${useRuntimeConfig().public.apiUrl}/api/v1/review/user/review`, {
             headers: {
               Authorization: `Bearer ${useAuthStore().token}`
             },
             method: 'POST',
-            body: JSON.stringify(reviewForm.value)
+            body: JSON.stringify(reviewForm.value),
           })
   )
   if (data.value) {

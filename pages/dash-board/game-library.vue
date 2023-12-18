@@ -152,7 +152,7 @@ const handleToggleModalGame=async (game)=>{
   //   codes: Array.from({length: game.totalQuantity}, () => generateString(19))
   // }
   loading.value=true
-  const {data}=await useAsyncData(`gamelibrayCodes_`+Math.random()*1000,
+  const {data,execute}=await useAsyncData(`gamelibrayCodes_`+Math.random()*1000,
       ()=>
           $fetch(`${useRuntimeConfig().public.apiUrl}/api/v1/codeActive/findAllByAccount_Id/${game.appid}`,{
             headers:{
@@ -185,7 +185,7 @@ function generateString(length) {
 }
 const onPageAndSizeChange=async (page,size) => {
   await router.push({
-    path: '/dash-board/game-library',
+    path: '/dash-board/game-library/',
     query: {
       ...useRoute().query,
       page: page,

@@ -7,16 +7,19 @@ import {useCookie} from "nuxt/app";
 
 export const useAuthStore = defineStore("auth", () => {
     const config = useRuntimeConfig();
+    const domain = config.public.appUrl.includes("localhost") ? "localhost" : config.public.appUrl.replace("https://", "").replace("http://", "");
     const token = ref(useCookie('accessToken', {
         watch: true,
-        default: () => '',
-
+        domain: domain
     }))
-
+    const refreshToken = ref(useCookie('refreshToken', {
+        watch: true,
+        domain: domain
+    }))
     const authenticated = ref(false)
     const loading = ref(false)
     const userProfile = ref({} as UserProfile)
-    const OAUTH2_REDIRECT_URI = config.public.appUrl+'/oauth2/redirect';
+    const OAUTH2_REDIRECT_URI = config.public.appUrl + '/oauth2/redirect';
     const GOOGLE_AUTH_URL = config.public.apiUrl + '/oauth2/authorize/google?redirect_uri=' + OAUTH2_REDIRECT_URI;
 
     const getAuthenticated = computed(() => authenticated.value);
@@ -25,7 +28,7 @@ export const useAuthStore = defineStore("auth", () => {
         const {data, pending, error}: any = await useFetch(
             config.public.apiUrl + "/api/v1/auth/authenticate",
             {
-                key:"authenticate_"+Math.random()*1000,
+                key: "authenticate_" + Math.random() * 1000,
                 method: "post",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(authDataRequest),
@@ -35,9 +38,10 @@ export const useAuthStore = defineStore("auth", () => {
         loading.value = pending;
         if (error.value) {
 
-            if(error.value?.data?.error==="User is disabled"){
+            if (error.value?.data?.error === "User is disabled") {
                 return "Your account is disabled. Please contact the administrator";
             }
+
             loading.value = false;
             authenticated.value = false;
             return false;
@@ -45,9 +49,7 @@ export const useAuthStore = defineStore("auth", () => {
         if (data.value) {
 
             token.value = data?.value.accessToken;
-            if(token.value===data?.value.accessToken){
-                console.log('token set')
-            }
+            refreshToken.value = data?.value.refreshToken;
             loading.value = false
             authenticated.value = true;
             return await getUserProfile().then((res) => {
@@ -82,14 +84,15 @@ export const useAuthStore = defineStore("auth", () => {
     async function getUserProfile(): Promise<boolean> {
 
         loading.value = true;
-        const {data, error, pending}: any = await useAsyncData('getUserProfile_' + Math.random() * 100, () =>
+        const {data, error, pending, execute}: any = await useAsyncData('getUserProfile_' + Math.random() * 100, () =>
             $fetch(
                 config.public.apiUrl + "/api/user/currentUser",
                 {
                     method: "GET",
                     headers: {
-                        'Authorization': `Bearer ${token.value}`
-                    },
+                        'Authorization': 'Bearer ' + token.value,
+                    }
+
                 },
             )
         );
@@ -101,7 +104,6 @@ export const useAuthStore = defineStore("auth", () => {
             console.log(userProfile.value)
             return true;
         } else if (error.value) {
-            console.log(error)
             loading.value = false
             return false;
         } else {
@@ -113,26 +115,35 @@ export const useAuthStore = defineStore("auth", () => {
     async function setProfile(profile: UserProfile) {
         userProfile.value = profile;
     }
-    async function setToken(tokentoSet: string) {
-        token.value = tokentoSet;
+
+    async function setToken(accessToken: any, refreshTokenValue: any) {
+        console.log(accessToken, refreshTokenValue)
+        let tempToken=token.value
+        console.log("isNew",tempToken===accessToken)
+        token.value = accessToken;
+        refreshToken.value = refreshTokenValue;
+        authenticated.value = true;
+        await getUserProfile()
     }
+
+    async function updateToken() {
+        token.value = useCookie('accessToken', {
+            watch: true,
+            domain: domain
+        }).value
+        refreshToken.value = useCookie('refreshToken', {
+            watch: true,
+            domain: domain
+        }).value
+
+    }
+
     async function logUserOut() {
-        const {error,status}=await useAsyncData('logUserOut_'+Math.random()*100,
-            ()=>
-                $fetch(`${config.public.apiUrl}/api/v1/auth/logout`,{
-                    method:"post",
-                    headers: {
-                        "Authorization": "Bearer " + token.value,
-                    }
-                })
-        )
-        console.log(status)
-        if(error.value){
-            return
-        }
+
         authenticated.value = false;
         userProfile.value = {} as UserProfile;
-        token.value = '';
+        token.value = null;
+        refreshToken.value = null;
         loading.value = false;
         navigateTo({
             path: '/login',
@@ -142,12 +153,15 @@ export const useAuthStore = defineStore("auth", () => {
             }
         })
     }
-
+    const getAccessToken = computed(() => token.value);
+    const getRefreshToken = computed(() => refreshToken.value);
     return {
         authenticated,
         loading,
         token,
+        refreshToken,
         userProfile,
+        updateToken,
         authenticateUser,
         getUserProfile,
         logUserOut,
@@ -156,7 +170,9 @@ export const useAuthStore = defineStore("auth", () => {
         OAUTH2_REDIRECT_URI,
         setProfile,
         getAuthenticated,
-        setToken
+        setToken,
+        getAccessToken,
+        getRefreshToken
     }
 });
 

@@ -50,7 +50,7 @@ definePageMeta({
   key: 'avatar-static',
   middleware: ['auth']
 })
-import {useLoadingBar} from 'naive-ui'
+
 import { useMessage } from 'naive-ui'
 
 export default {
@@ -82,6 +82,7 @@ export default {
         if(error.value){
           console.log(error.value)
           this.message.error("Change avatar failed")
+          this.pending = false
           return;
         }
         if (data.value) {

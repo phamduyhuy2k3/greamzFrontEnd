@@ -1,7 +1,6 @@
 <template>
   <Header></Header>
   <main>
-    <BreadCrumb :breadcrumbs="breadcrumbs"></BreadCrumb>
     <slot />
   </main>
   <Footer></Footer>

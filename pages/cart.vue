@@ -1,8 +1,8 @@
 <template>
-  <div class="mx-auto xl:w-[80%] w-full text-white">
+  <div class="mx-auto text-white">
     <BreadCrumb  :breadcrumbs="breadcrumbs"></BreadCrumb>
-    <h1 class="font-bold text-[2.5rem] mt-3">
-      YOUR SHOPPING CART
+    <h1 class="font-bold text-[2.5rem] mt-3 uppercase">
+      {{ $t('cart.yspc') }}
     </h1>
     <div class="mt-5 p-2">
       <div class="cart-header flex items-center justify-center">

@@ -231,7 +231,7 @@ const {data, execute,refresh,pending} = await useAsyncData('gamesFilter-' + rout
 )
 const onPageAndSizeChange=async (page,size) => {
   await router.push({
-    path: '/search',
+    path: '/search/',
     query: {
       ...useRoute().query,
 
@@ -246,7 +246,7 @@ const onPageAndSizeChange=async (page,size) => {
 }
 const onSelect = async () => {
   await router.push({
-    path: '/search',
+    path: '/search/',
     query: {
       ...useRoute().query,
       sort: valueSorBy.value,

@@ -8,7 +8,7 @@
     <div
         class="w-full lg:max-w-xl p-6 space-y-8 sm:p-8 rounded-lg shadow-xl dark:bg-gray-800 bg-[#181a21]"
     >
-      <h2 class="text-2xl font-bold text-white">Sign in</h2>
+      <h2 class="text-2xl font-bold text-white">{{$t('login.title')}}</h2>
       <div v-if="loading" role="status" class="mx-auto text-center">
         <svg
             aria-hidden="true"
@@ -39,7 +39,7 @@
           <label
               for="email"
               class="block mb-2 text-sm font-medium text-[#1999ff] uppercase font-weight-black"
-          >Sign in with your username or email</label
+          >{{$t('login.username')}}</label
           >
           <input
               id="email"
@@ -57,7 +57,7 @@
           <label
               for="password"
               class="block mb-2 text-sm font-medium text-[#1999ff] uppercase font-weight-black"
-          >Your password</label
+          >{{ $t('login.password') }}</label
           >
           <input
               id="password"
@@ -145,7 +145,7 @@ useHead({
     },
   ],
 });
-const {authenticateUser, getUserProfile, setToken,OAUTH2_REDIRECT_URI,GOOGLE_AUTH_URL} = useAuthStore();
+const {authenticateUser, getUserProfile, updateToken,OAUTH2_REDIRECT_URI,GOOGLE_AUTH_URL} = useAuthStore();
 const isInvalid = ref(false);
 const {loading, authenticated} = storeToRefs(useAuthStore());
 const loginForm = reactive({
@@ -169,6 +169,7 @@ const oauthLogin = async (url,provider) => {
   const checkPopup = setInterval(async () => {
     if (popup.closed || !popup)  clearInterval(checkPopup);
     if (popup.window.location.href.includes('/oauth2/redirect')) {
+      await updateToken();
       await getUserProfile().then((res) => {
         if (res) {
           useRouter().push({path: '/', query: {message: 'Login successfully', alert: 'success'}})
