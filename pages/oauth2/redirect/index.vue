@@ -11,6 +11,7 @@ if(route.query?.token){
   token.value=route.query.token;
 
 }
+window.close();
 </script>
 
 <style scoped>
