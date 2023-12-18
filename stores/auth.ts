@@ -18,7 +18,7 @@ export const useAuthStore = defineStore("auth", () => {
     const authenticated = ref(false)
     const loading = ref(false)
     const userProfile = ref({} as UserProfile)
-    const OAUTH2_REDIRECT_URI = config.public.appUrl + '/oauth2/redirect';
+    const OAUTH2_REDIRECT_URI = config.public.appUrl + '/oauth2/redirect/';
     const GOOGLE_AUTH_URL = config.public.apiUrl + '/oauth2/authorize/google?redirect_uri=' + OAUTH2_REDIRECT_URI;
 
     const getAuthenticated = computed(() => authenticated.value);
