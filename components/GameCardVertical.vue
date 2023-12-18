@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-md hover:shadow-lg max-w-[400px] " style="">
+  <div class="rounded-md hover:shadow-lg" style="">
     <div class="relative">
       <NuxtLink :to="'/game/appid/'+game.appid" class="">
         <img

@@ -12,7 +12,7 @@
       <span>{{useRoute().query.message}}</span>
     </div>
   </div>
-  <main  class=" pb-6"  >
+  <main  class="w-[99%] md:w-[90%] mx-auto pb-6"  >
 <!--    <div  class="fixed bottom-6 end-10 group" style="z-index: 757">-->
 <!--      <button type="button" @click="main.scrollTop=0"  aria-expanded="false" class="flex items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">-->
 

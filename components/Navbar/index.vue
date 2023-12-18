@@ -1,7 +1,7 @@
 <template>
   <nav
       class="absolute top-5 mx-auto left-0 right-0 greamz-navbar"
-      style="width: 70%; max-width: 70%"
+      style="width: 70%; max-width: 70%; z-index: 45454543"
   >
     <div class="xl:flex md:flex hidden rounded-md shadow-sm ">
       <NuxtLink to="/"
@@ -46,7 +46,7 @@
       </div>
     </div>
     <ul v-show="showCategoriesDropdown"  class="absolute p-2 left-0 right-0 shadow rounded-box flex flex-row  justify-center "
-        style="background: linear-gradient(90deg, rgba(33, 162, 255, 0.1) 1.89%, rgba(50, 50, 51, 0) 50%), linear-gradient(180deg, #575860 11.6%, #3A4852 54.73%, #2C2D34 100%);">
+        style="background: linear-gradient(90deg, rgba(33, 162, 255, 0.1) 1.89%, rgba(50, 50, 51, 0) 50%), linear-gradient(180deg, #575860 11.6%, #3A4852 54.73%, #2C2D34 100%); ">
       <li class="">
         <div class="p-4 pb-0 text-gray-900 md:pb-4 dark:text-white w-auto">
           <span class="font-bold text-[1.2rem] text-white text-center mx-auto">Special sections</span>

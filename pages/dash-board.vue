@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-auto md:w-[90%] text-white pt-16">
-    <BreadCrumb  :breadcrumbs="breadcrumbs"></BreadCrumb>
+  <div class="mx-auto text-white pt-16">
+
     <div class="flex justify-center items-center flex-col">
       <img class="h-28 w-28 rounded-full" :src="$state.userProfile.photo" alt="userAvatar">
       <span class="text-[2rem]">{{ $state.userProfile.username }}</span>
@@ -18,7 +18,7 @@
           </NuxtLink>
         </li>
         <li role="presentation" class="ms-auto">
-          <NuxtLink to="/dash-board/profile/settings-avatar" class="inline-block p-4  rounded-t-lg text-white hover:text-blue-600 hover:border-gray-300 "
+          <NuxtLink :external="false"  to="/dash-board/profile/settings-avatar" class="inline-block p-4  rounded-t-lg text-white hover:text-blue-600 hover:border-gray-300 "
                     id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts"
                     aria-selected="false">
             <svg class="w-6 h-6 mx-auto" aria-hidden="true" viewBox="0 0 20 18" fill="none"

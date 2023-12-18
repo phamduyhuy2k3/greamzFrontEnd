@@ -1,5 +1,5 @@
 <template>
-  <article class="p-4 border rounded-md min-h-[170px]">
+  <article class="p-4 border rounded-md min-h-[170px] max-w-[426px]">
     <header class="flex flex-col items-start pb-4 md:flex-row md:justify-between">
       <div class="flex items-start">
         <img :src="review.account.photo" alt="Review avatar" class="p-0.5 w-14 h-14 rounded-full" />
@@ -64,7 +64,7 @@ const reviewRef=ref({
   likes: review.likes,
   dislikes: review.dislikes,
 })
-const charLimit = 300;
+const charLimit = 20;
 const isCollapsed = ref(true);
 const isButtonVisible = computed(() => review.text.length > charLimit);
 const truncatedContent = computed(() =>

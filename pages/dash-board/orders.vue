@@ -154,14 +154,19 @@ const {data,pending,execute }=await useAsyncData(`order_`+Math.random()*1000,
           headers:{
             Authorization: `Bearer ${useAuthStore().token}`
           },
-          method:'GET'
+          method:'GET',
+          onResponseError({request,response,options}) {
+            if(response.status===401){
+              return resetAuth()
+            }
+          }
         })
 )
 const toggleModalOrderDetail=ref(false)
 const orderDetail=ref(null)
 const orderCurrent=ref(null)
 const handleToggleModalOrderDetail=async (id)=>{
-  const {data, pending:pendingDetail } = await useAsyncData('orderDetail' + id, () =>
+  const {data, pending:pendingDetail,execute } = await useAsyncData('orderDetail' + id, () =>
       $fetch(`${useRuntimeConfig().public.apiUrl}/api/v1/order/${id}/detail`, {
         headers: {
           'Authorization': `Bearer ${useAuthStore().token}`
@@ -181,7 +186,7 @@ const handleToggleModalOrderDetail=async (id)=>{
 }
 const onSelectStatus=async ()=>{
   await router.push({
-    path: '/dash-board/orders',
+    path: '/dash-board/orders/',
     query: {
       ...useRoute().query,
       orderStatus: status.value
@@ -194,7 +199,7 @@ const onSelectStatus=async ()=>{
 }
 const onPageAndSizeChange=async (page,size) => {
   await router.push({
-    path: '/dash-board/orders',
+    path: '/dash-board/orders/',
     query: {
       ...useRoute().query,
       page: page,

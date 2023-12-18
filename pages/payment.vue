@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto md:w-[80%]  text-white relative">
+  <div class="mx-auto text-white relative">
 
     <BreadCrumb  :breadcrumbs="userBreadCrumb().breadcrumbs"></BreadCrumb>
     <h1 class="font-bold text-[2.5rem] mt-3">

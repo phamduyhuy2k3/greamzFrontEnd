@@ -5,7 +5,6 @@ import {SfCounter, SfLink, SfRating, SfIconSell, SfIconAdd, SfIconRemove, useId,
 import {clamp} from '@storefront-ui/shared';
 import {useCounter} from '@vueuse/core';
 definePageMeta({
-  breadcrumb: "Game Detail",
   validate: (route) => {
     return /^\d+$/.test(route.params.gameId)
   }
@@ -123,7 +122,7 @@ useSeoMeta({
 })
 </script>
 <template>
-  <div class="mx-auto w-[80%] text-white">
+  <div class="mx-auto text-white">
 
     <div class="xl:grid  xl:grid-cols-12 rounded-[2px]  gap-4 flex flex-col-reverse ">
       <div
@@ -287,20 +286,20 @@ useSeoMeta({
              <legend>
                 Platforms:
              </legend>
-             <div class="flex flex-wrap gap-3">
+             <div class="flex flex-wrap gap-3 mx-auto">
 
                <template v-for="pl in gameDetail.platforms">
                  <button type="button"
                          v-if="gameDetailToAdd.platform.name===pl.name "
                          @click="gameDetailToAdd.platform=pl; max=pl.stock; count=1"
                          class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                   {{pl.name}} | stock: {{pl.stock}}
+                   {{pl.name}}
                  </button>
 
                  <button v-else type="button"
                          @click="gameDetailToAdd.platform=pl; max=pl.stock; count=1"
                          class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                   {{pl.name}} | stock: {{pl.stock}}
+                   {{pl.name}}
                  </button>
                </template>
              </div>
@@ -312,8 +311,9 @@ useSeoMeta({
             >
               Out of stock
             </div>
-            <div class="items-start xs:flex" v-else>
+            <div class="flex flex-col gap-3 items-start" v-else>
               <div class="inline-flex flex-col items-center">
+                <span class="text-sm text-white">Stock: {{ gameDetailToAdd.platform.stock }}</span>
                 <div class="flex border border-gray-200 rounded-md">
                   <SfButton
                       variant="tertiary"
@@ -349,7 +349,8 @@ useSeoMeta({
                 </div>
 
               </div>
-              <SfButton @click="addToCart(gameDetailToAdd,count); count=1" size="lg" class="w-full xs:ml-4 bg-[#ff346d]">
+
+              <SfButton @click="addToCart(gameDetailToAdd,count); count=1" size="lg" class="w-full  bg-[#ff346d]">
                 <template #prefix>
                   <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5h4m-2 2V3M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.938-11H17l-2 7H5m0 0L3 4m0 0h2M3 4l-.792-3H1"/>

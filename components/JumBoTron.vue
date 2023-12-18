@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full relative -z-1">
+  <div class="w-full relative -z-1" style="z-index: 10">
     <img
-      class="w-full h-auto max-w-full hidden sm:flex"
+      class="w-full h-auto max-w-full flex"
 
       src="/img/home_header_bg_rainy_english.gif"
    />
