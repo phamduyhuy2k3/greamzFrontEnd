@@ -8,7 +8,7 @@ const router=useRouter();
 const {setToken } = useAuthStore();
 console.log(route.query)
 if(route.query?.token&&route.query?.refreshToken){
-    setToken(route.query.accessToken,route.query.refreshToken);
+    setToken(route.query.token,route.query.refreshToken);
     router.push('/');
 
 }
