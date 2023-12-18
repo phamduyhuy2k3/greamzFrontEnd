@@ -5,13 +5,14 @@
 <script setup>
 const route=useRoute();
 const router=useRouter();
-const {token } = useAuthStore();
+const {setToken } = useAuthStore();
 console.log(route.query)
-if(route.query?.token){
-  token.value=route.query.token;
+if(route.query?.accessToken&&route.query?.refreshToken){
+    setToken(route.query.accessToken,route.query.refreshToken);
+    router.push('/');
 
 }
-window.close();
+
 </script>
 
 <style scoped>
