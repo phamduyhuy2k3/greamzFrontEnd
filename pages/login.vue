@@ -169,7 +169,6 @@ const oauthLogin = async (url,provider) => {
   const checkPopup = setInterval(async () => {
     if (popup.closed || !popup)  clearInterval(checkPopup);
     if (popup.window.location.href.includes('/oauth2/redirect')) {
-      await updateToken();
       await getUserProfile().then((res) => {
         if (res) {
           useRouter().push({path: '/', query: {message: 'Login successfully', alert: 'success'}})

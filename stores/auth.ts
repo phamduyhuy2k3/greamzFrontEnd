@@ -118,9 +118,6 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
     async function setToken(accessToken: any, refreshTokenValue: any) {
-        console.log(accessToken, refreshTokenValue)
-        let tempToken=token.value
-        console.log("isNew",tempToken===accessToken)
         token.value = accessToken;
         refreshToken.value = refreshTokenValue;
         authenticated.value = true;
