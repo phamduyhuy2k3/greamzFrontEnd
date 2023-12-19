@@ -175,6 +175,7 @@ const oauthLogin = async (url,provider) => {
         } else {
           isInvalid.value = true;
           error.value=`Login with ${provider} failed. Please try again or use other login method`
+
         }
         loading.value = false;
 

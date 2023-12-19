@@ -71,6 +71,11 @@ export const useAuthStore = defineStore("auth", () => {
         if (error.value) {
             loading.value = false;
             authenticated.value = false;
+            if (error.value?.data?.error === "User is disabled") {
+               await setToken(null, null);
+                return false;
+            }
+
 
             return false;
         }
