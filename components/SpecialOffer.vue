@@ -1,16 +1,17 @@
 <template>
-  <LazyGameCardVertical v-if="data" v-for="game in data" :game="game"/>
+  <suspense>
+    <GameCardVertical v-if="data" v-for="game in data" :game="game"/>
+    <template #fallback>
+      <GameCardSkeleton v-for="i in 16" :key="i"/>
+    </template>
+  </suspense>
 </template>
 
 <script setup>
-const config=useRuntimeConfig()
-const date=new Date()
-console.log(date.getMonth()+1)
 const {data}=await useAsyncData(`specialOffer`,
     ()=>
-        $fetch(`${config.public.apiUrl}/api/v1/dashboard/specialOffer`,{
+        $fetch(`/api/server/v1/dashboard/specialOffer`,{
             method:'GET',
-
 
         })
 );

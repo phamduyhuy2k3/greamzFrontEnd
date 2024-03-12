@@ -1,17 +1,25 @@
 <template>
-  <div id="review" class="flex flex-col items-center justify-center gap-3 relative" v-if="reviews.length>0||!paggeAble.empty">
-    <ReviewItem v-for="review in reviews" :key="review.id" :review="review"/>
-    <SfButton v-if="!paggeAble.last" @click="fetchReviews(paggeAble.number+1)" size="lg"
-              class="bg-[#ff346d] hover:bg-[#3b82f6] p-2">View more reviews
-    </SfButton>
+  <div id="review" class="flex flex-col items-center justify-center gap-3 relative"
+       v-if="reviews.length>0||!paggeAble.empty">
+      <ReviewItem v-for="review in reviews" :key="review.id" :review="review"/>
+      <SfButton v-if="!paggeAble.last" @click="fetchReviews(paggeAble.number+1)" size="lg"
+                class="bg-[#ff346d] hover:bg-[#3b82f6] p-2">View more reviews
+      </SfButton>
+
+
   </div>
+  <template v-else>
+    <div class="text-white" id="review">
+      No reviews found
+    </div>
+  </template>
 </template>
 
 <script setup>
 const config = useRuntimeConfig()
 const {appid} = defineProps({
   appid: {
-    type: Object,
+    type: Number,
     required: true,
   }
 });
@@ -33,9 +41,9 @@ const fetchReviews = async (page = 0) => {
       }
   const {data, error} = await useAsyncData(`reviews_${Math.random() * 100}`,
       () =>
-          $fetch(`${config.public.apiUrl}/api/v1/game/reviewsOfGame/${appid}`, {
+          $fetch(`/api/server/v1/game/reviewsOfGame/${appid}`, {
             method: 'GET',
-            query:payload
+            query: payload
           }),
   )
   if (data.value) {

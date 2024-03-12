@@ -57,7 +57,7 @@
             {{ order.ordersStatus }}
           </td>
           <td class="px-6 py-4">
-            {{ formatDate(order.createdAt) }}
+            {{ formatDate(order.createdOn) }}
           </td>
           <td class="px-6 py-4">
             <a @click="handleToggleModalOrderDetail(order.id)" class="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
@@ -150,16 +150,12 @@ const statues=[
 console.log(status.value)
 const {data,pending,execute }=await useAsyncData(`order_`+Math.random()*1000,
     ()=>
-        $fetch(`${useRuntimeConfig().public.apiUrl}/api/v1/order/status/${status.value}?page=${useRoute().query.page | 0}&size=${useRoute().query.size |10}`,{
+        $fetch(`/api/server/v1/order/status/${status.value}?page=${useRoute().query.page | 0}&size=${useRoute().query.size |10}`,{
           headers:{
-            Authorization: `Bearer ${useAuthStore().token}`
+            Authorization: `Bearer`
           },
           method:'GET',
-          onResponseError({request,response,options}) {
-            if(response.status===401){
-              return resetAuth()
-            }
-          }
+
         })
 )
 const toggleModalOrderDetail=ref(false)
@@ -167,9 +163,9 @@ const orderDetail=ref(null)
 const orderCurrent=ref(null)
 const handleToggleModalOrderDetail=async (id)=>{
   const {data, pending:pendingDetail,execute } = await useAsyncData('orderDetail' + id, () =>
-      $fetch(`${useRuntimeConfig().public.apiUrl}/api/v1/order/${id}/detail`, {
+      $fetch(`/api/server/v1/order/${id}/detail`, {
         headers: {
-          'Authorization': `Bearer ${useAuthStore().token}`
+          'Authorization': `Bearer`
         },
         method: 'GET'
 

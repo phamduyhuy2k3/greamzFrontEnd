@@ -128,6 +128,7 @@ definePageMeta({
   breadcrumb: "Your game library",
   middleware: ['auth']
 });
+
 import { useMessage } from 'naive-ui'
 const message=useMessage()
 const sort= ref('createdAt')
@@ -135,9 +136,9 @@ const router= useRouter()
 const loading=ref(false)
 const {data,pending,execute }=await useAsyncData(`gamelibray_`+Math.random()*1000,
     ()=>
-        $fetch(`${useRuntimeConfig().public.apiUrl}/api/v1/order/game-library?page=${useRoute().query.page | 0}&size=${useRoute().query.size |10}`,{
+        $fetch(`/api/server/v1/order/game-library?page=${useRoute().query.page | 0}&size=${useRoute().query.size |10}`,{
           headers:{
-            Authorization: `Bearer ${useAuthStore().token}`
+            Authorization: `Bearer`
           },
           method:'GET'
         })
@@ -154,9 +155,9 @@ const handleToggleModalGame=async (game)=>{
   loading.value=true
   const {data,execute}=await useAsyncData(`gamelibrayCodes_`+Math.random()*1000,
       ()=>
-          $fetch(`${useRuntimeConfig().public.apiUrl}/api/v1/codeActive/findAllByAccount_Id/${game.appid}`,{
+          $fetch(`/api/server/v1/codeActive/findAllByAccount_Id/${game.appid}`,{
             headers:{
-              Authorization: `Bearer ${useAuthStore().token}`
+              Authorization: `Bearer`
             },
             method:'GET'
           })

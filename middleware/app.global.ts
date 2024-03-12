@@ -1,6 +1,13 @@
 
 export default defineNuxtRouteMiddleware(async (to,from) => {
 
-    await useCart().updateCartFromDatabase()
-    await useAuthStore().getUserProfile()
+    const {authenticated,getUserProfile,getProfile}=useAuthStore()
+    const {fetch}=useCart()
+    await getUserProfile().then(async (user)=>{
+        if(user){
+            await fetch()
+        }
+    })
+
+
 });

@@ -2,7 +2,7 @@
   <div style="display: flex; flex-direction: row">
     <VOtpInput
         ref="otpInput"
-        v-model:value="bindModal"
+        v-model:value="model"
         input-classes="otp-input"
         separator="-"
         :num-inputs="6"
@@ -17,13 +17,8 @@
 <script setup lang="ts">
 import VOtpInput from "vue3-otp-input";
 const otpInput = ref<InstanceType<typeof VOtpInput> | null>(null);
-const {model}=defineProps({
-  model:{
-    type:String,
-    default:""
-  }
-})
-const bindModal = ref("");
+const model = defineModel({required: true, type: String})
+
 const handleOnComplete = (value: string) => {
   console.log("OTP completed: ", value);
 };

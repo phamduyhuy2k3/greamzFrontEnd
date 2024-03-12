@@ -107,7 +107,7 @@
         <div class="flex flex-col items-center justify-center px-[3rem] gap-3">
           <button type="button"
                   class="rounded-md p-2 w-full flex gap-2 justify-center items-center cursor-pointer bg-[#e4e4e7]"
-                  @click="oauthLogin(GOOGLE_AUTH_URL,'google')">
+                  @click="oauthLogin('google')">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 128 128">
               <path fill="#fff"
                     d="M44.59 4.21a63.28 63.28 0 0 0 4.33 120.9a67.6 67.6 0 0 0 32.36.35a57.13 57.13 0 0 0 25.9-13.46a57.44 57.44 0 0 0 16-26.26a74.33 74.33 0 0 0 1.61-33.58H65.27v24.69h34.47a29.72 29.72 0 0 1-12.66 19.52a36.16 36.16 0 0 1-13.93 5.5a41.29 41.29 0 0 1-15.1 0A37.16 37.16 0 0 1 44 95.74a39.3 39.3 0 0 1-14.5-19.42a38.31 38.31 0 0 1 0-24.63a39.25 39.25 0 0 1 9.18-14.91A37.17 37.17 0 0 1 76.13 27a34.28 34.28 0 0 1 13.64 8q5.83-5.8 11.64-11.63c2-2.09 4.18-4.08 6.15-6.22A61.22 61.22 0 0 0 87.2 4.59a64 64 0 0 0-42.61-.38z"/>
@@ -145,7 +145,7 @@ useHead({
     },
   ],
 });
-const {authenticateUser, getUserProfile, updateToken,OAUTH2_REDIRECT_URI,GOOGLE_AUTH_URL} = useAuthStore();
+const {authenticateUser, getUserProfile} = useAuthStore();
 const isInvalid = ref(false);
 const {loading, authenticated} = storeToRefs(useAuthStore());
 const loginForm = reactive({
@@ -160,31 +160,12 @@ onMounted(() => {
     offAlert.value = true;
   }, 5000);
 })
-const oauthLogin = async (url,provider) => {
-  let left = (screen.width - 600) / 2;
-  let top = (screen.height - 600) / 4;
-  const popup = window.open(url, 'popup', 'resizable=yes, width=' + 600
-      + ', height=' + 600 + ', top='
-      + top + ', left=' + left);
-  const checkPopup = setInterval(async () => {
-    if (popup.closed || !popup)  clearInterval(checkPopup);
-    if (popup.window.location.href.includes('/oauth2/redirect')) {
-      await getUserProfile().then((res) => {
-        if (res) {
-          useRouter().push({path: '/', query: {message: 'Login successfully', alert: 'success'}})
-        } else {
-          isInvalid.value = true;
-          error.value=`Login with ${provider} failed. Please try again or use other login method`
+const oauthLogin = async (provider) => {
+  const config = useRuntimeConfig()
 
-        }
-        loading.value = false;
-
-      })
-      popup.close()
-    }
-
-
-  }, 1000);
+  const {data} = await useFetch('/api/client/baseurl')
+  const AUTH_URL = `${data.value}/oauth2/authorize/${provider}?redirect_uri=${config.public.appUrl }`;
+  window.location.href = AUTH_URL;
 
 
 }
@@ -192,23 +173,33 @@ const error = ref("");
 const login = async () => {
   loading.value = true;
 
-  await authenticateUser(loginForm).then((res) => {
-    if(res==="Your account is disabled. Please contact the administrator"){
-      isInvalid.value = true;
-      error.value = res;
+  const isLoginSuccess= await authenticateUser(loginForm)
+  if(isLoginSuccess==='Your account is disabled. Please contact the administrator'){
+    error.value=isLoginSuccess
+    isInvalid.value = true;
+    loading.value = false;
+    return
+  }
+  if(isLoginSuccess){
+    clearNuxtData()
+    const isGetProfileSuccess= await getUserProfile()
+    if(isGetProfileSuccess){
       loading.value = false;
-      return;
+      useRouter().push({path: route.query?.redirect||'/', query: {message: 'Login successfully', alert: 'success'}})
     }
-    if (res) {
-      useRouter().push({path: '/', query: {message: 'Login successfully', alert: 'success'}})
-    } else {
-      console.log("asdsadsadasd")
+    else {
       isInvalid.value = true;
-      error.value = "Username or password is incorrect";
+      loading.value = false;
+      error.value='Login failed. Please try again or use other login method'
     }
 
-  })
-  loading.value = false;
+  }else {
+    error.value="Invalid username or password. Please try again."
+    isInvalid.value = true;
+    loading.value = false;
+
+  }
+
 
 };
 </script>

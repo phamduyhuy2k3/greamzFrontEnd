@@ -250,9 +250,9 @@ const submitForm = async () => {
   }
   const {data, error,execute} = await useAsyncData(`review_${Math.random() * 1000}`,
       () =>
-          $fetch(`${useRuntimeConfig().public.apiUrl}/api/v1/review/user/review`, {
+          $fetch(`/api/server/v1/review/user/review`, {
             headers: {
-              Authorization: `Bearer ${useAuthStore().token}`
+              Authorization: `Bearer`
             },
             method: 'POST',
             body: JSON.stringify(reviewForm.value),

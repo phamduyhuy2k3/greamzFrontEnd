@@ -39,7 +39,15 @@
         {{ game.name }}
       </div>
       <div class="text-[1.2rem] text-center">
-        {{ $currency(game.price) }}
+        <div v-if="game.discount && game.discount>0">
+          <span class="text-sm line-through mr-2">{{ formatCurrency(game.price) }}</span>
+          <span
+              class="text-xl font-light text-[#FF0000]">{{ formatCurrency(game.price * (100 - game.discount) / 100) }}
+              </span>
+        </div>
+        <div v-else>
+          <span class="">{{ formatCurrency(game.price) }}</span>
+        </div>
       </div>
     </div>
   </div>

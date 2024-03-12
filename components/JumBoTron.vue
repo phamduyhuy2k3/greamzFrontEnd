@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full relative -z-1" style="z-index: 10">
+  <div class="w-full relative " style="z-index: 10">
     <img
       class="w-full h-auto max-w-full flex"
 

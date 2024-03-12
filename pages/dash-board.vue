@@ -5,7 +5,7 @@
       <img class="h-28 w-28 rounded-full" :src="$state.userProfile.photo" alt="userAvatar">
       <span class="text-[2rem]">{{ $state.userProfile.username }}</span>
       <span
-          class="text-neutral-500">Member since: {{ new Date($state.userProfile.createdAt).toLocaleDateString('en-GB') }}</span>
+          class="text-neutral-500">Member since: {{ new Date($state.userProfile.createdOn).toLocaleDateString('en-GB') }}</span>
     </div>
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
       <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" role="tablist">

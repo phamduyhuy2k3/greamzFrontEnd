@@ -1,6 +1,6 @@
 <template>
   <article class="w-full p-4 border rounded-md">
-    <header class="flex flex-col items-start pb-4 md:flex-row md:justify-between">
+    <header class="flex flex-col items-start pb-3 md:flex-row md:justify-between">
       <div class="flex items-start">
         <img :src="review.account.photo" alt="Review avatar" class="p-0.5 w-14 h-14 rounded-full" />
         <div class="flex-col pl-2">
@@ -8,11 +8,12 @@
           <span class="flex items-center pr-2 text-xs text-neutral-500">
             <SfRating :value="review.rating" :max="5" size="xs" class="mr-2 text-[#fde047]" />
 
-            {{ moment(review.createdAt).fromNow()}}
+            {{ moment(review.createdOn).fromNow()}}
           </span>
         </div>
       </div>
       <p class="flex items-center text-xs truncate text-primary-700">
+        <span class="mr-2 text-xs text-neutral-500">Platform: {{review.platform.name}}</span>
         <SfIconCheck size="xs" class="mr-1" /> Verified purchase
       </p>
     </header>
@@ -38,7 +39,7 @@
         </button>
       </div>
 
-      <button class="px-3 py-1.5 text-neutral-500 font-medium text-sm hover:text-primary-800" type="button">
+      <button class="px-3 py-1 text-neutral-500 font-medium text-sm hover:text-primary-800" type="button">
         Report abuse
       </button>
     </footer>
@@ -56,7 +57,7 @@ const {review}= defineProps({
   }
 });
 
-console.log(review)
+
 const reviewRef=ref({
   reacted: review.reacted,
   reactionType: review.reactionType,
@@ -87,11 +88,11 @@ const reaction=async (isReacted,reactType)=>{
 
   const {data}=await useAsyncData('reactTheReview_'+Math.random()*10000,
       ()=>
-          $fetch(`${config.public.apiUrl}/api/v1/review/react`,{
+          $fetch(`/api/server/v1/review/react`,{
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer '+useAuthStore().token,
+              'Authorization': 'Bearer',
             },
             body: JSON.stringify(payload)
           }),

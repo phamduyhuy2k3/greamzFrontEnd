@@ -1,4 +1,5 @@
 <template>
+
   <LazyHeader></LazyHeader>
   <div v-if="toastMessage && useRoute().query.alert==='info' && useRoute().query.message " class="toast top-[15%] toast-end" style="z-index: 696969">
     <div class="alert alert-info">
@@ -12,19 +13,18 @@
       <span>{{useRoute().query.message}}</span>
     </div>
   </div>
-  <main  class="w-[99%] md:w-[90%] mx-auto pb-6"  >
-<!--    <div  class="fixed bottom-6 end-10 group" style="z-index: 757">-->
-<!--      <button type="button" @click="main.scrollTop=0"  aria-expanded="false" class="flex items-center justify-center text-white bg-blue-700 rounded-full w-14 h-14 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">-->
-
-<!--        <svg  class="rotate-180 transition-transform w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">-->
-<!--          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1v12m0 0 4-4m-4 4L1 9"/>-->
-<!--        </svg>-->
-<!--        <span class="sr-only">Scroll to top</span>-->
-<!--      </button>-->
-<!--    </div>-->
-    <slot>
-    </slot>
+  <main  class="w-full xl:w-[90%] min-h-[880px] md:w-[96%] mx-auto  pb-6"  >
+    <suspense>
+      <slot>
+      </slot>
+      <template #fallback>
+        <div class="flex justify-center items-center h-[50vh]">
+          <n-spin size="large" />
+        </div>
+      </template>
+    </suspense>
   </main>
+
   <Footer></Footer>
 </template>
 <script setup>
@@ -33,6 +33,7 @@ onMounted(() => {
   initFlowbite();
 
 });
+
 
 
 const toastMessage = ref(false);

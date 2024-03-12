@@ -51,9 +51,12 @@
           Checkout
         </SfButton>
 
-        <div>
-          <PayPalButton v-if="paymentMethod=== 'PAYPAL'"/>
-        </div>
+        <suspense v-if="paymentMethod=== 'PAYPAL'">
+          <LazyPayPalButton />
+          <template #fallback>
+            <n-spin v-if="isRequestSend" class="flex justify-center items-center" size="medium" />
+          </template>
+        </suspense>
       </template>
       <n-spin v-else class="flex justify-center items-center" size="medium" />
       <template v-if="!loading&&getCartTotal<=0">
@@ -214,30 +217,7 @@ export default {
   }
 }
 
-// const placeOrder = () => {
-//   console.log(paymentMethod)
-//   if (paymentMethodRef.value === 'SOLANA') {
-//     return
-//   }
-//
-//
-// }
-// const checkPromoCode = () => {
-//   if ((promoCode.value === -100 && inputValue.value.toUpperCase() === 'VSF2020') || !inputValue.value) return;
-//   if (inputValue.value.toUpperCase() === 'VSF2020') {
-//     promoCode.value = -100;
-//     showAddedCodeAlert.value = true;
-//     setTimeout(() => (showAddedCodeAlert.value = false), 5000);
-//   } else {
-//     showErrorAlert.value = true;
-//     setTimeout(() => (showErrorAlert.value = false), 5000);
-//   }
-// };
-// const removePromoCode = () => {
-//   promoCode.value = 0;
-//   showRemovedCodeAlert.value = true;
-//   setTimeout(() => (showRemovedCodeAlert.value = false), 5000);
-// };
+
 
 
 </script>

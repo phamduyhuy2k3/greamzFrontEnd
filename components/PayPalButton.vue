@@ -32,7 +32,6 @@ onMounted(async () => {
     }
   }
 });
-
 const createOrder = (data, actions) => {
   const payPalOrderId = useCart().placeOrder('PAYPAL').then((res) => {
     return res
@@ -41,44 +40,52 @@ const createOrder = (data, actions) => {
 
 }
 const onApprove =async  (data, actions) => {
-   const {data:data1,status}=await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/payment/paypal/capture`,
+   const {data:data1,status,error}=await useFetch(`/api/server/v1/payment/paypal/capture`,
       {
         method: "post",
         headers: {
-          "Authorization": `Bearer ${useAuthStore().token}`
+          "Authorization": `Bearer`
         },
         query:{
           paypalOrderId:data.orderID,
           orderId:useCart().getOrder.id
         }
       })
-  if(status===201){
-    window.location.href=data1.value.redirectURL
-  }else {
-    window.location.href =useRuntimeConfig().public.apiUrl+ data1.value.redirectURL;
+
+  if(error.value){
+    navigateTo(error.value.redirectURL)
+    return;
   }
+  if(data1.value){
+
+    navigateTo(data1.value.redirectURL)
+  }
+
 }
 const onError = async (err) => {
-  const{status,data}= await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/checkout/failed`,{
+  console.log(err)
+  const{status,data}= await useFetch(`/api/server/v1/checkout/failed`,{
     method: "GET",
     headers: {
-      "Authorization": `Bearer ${useAuthStore().token}`
+      "Authorization": `Bearer`
     },
     query:{
-      orderId:useCart().getOrder.id
+      orderId:useCart().getOrder.id,
+      status: "FAILED"
     }
   })
 
   // window.location.href = "/your-error-page-here";
 }
 const onCancel= async (data)=> {
-  await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/checkout/failed`,{
+  await useFetch(`/api/server/v1/checkout/failed`,{
     method: "GET",
     headers: {
-      "Authorization": `Bearer ${useAuthStore().token}`
+      "Authorization": `Bearer`
     },
     query:{
-      orderId:useCart().getOrder.id
+      orderId:useCart().getOrder.id,
+      status: "CANCELLED"
     }
   })
 }

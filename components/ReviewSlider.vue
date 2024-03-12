@@ -1,5 +1,6 @@
 <template>
   <SfScrollable
+      v-if="data!=null&& !data?.empty"
       class="m-auto py-4 items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       buttons-placement="floating"
       drag
@@ -17,6 +18,7 @@
       </SfButton>
     </template>
     <div
+
         v-for="review in data.content" :key="review.id"
         class="first:ms-auto last:me-auto border border-neutral-200 shrink-0 rounded-md hover:shadow-lg  "
     >
@@ -44,12 +46,10 @@ import {
   SfIconChevronRight,
   SfScrollable,
 } from '@storefront-ui/vue';
-
-
 const config=useRuntimeConfig()
 const {data}=await useAsyncData(`reviews`+Math.random()*10000,
     ()=>
-        $fetch(`${config.public.apiUrl}/api/v1/review/findPage`,{
+        $fetch(`/api/server/v1/review/findPage`,{
           method: "GET"
         })
 )

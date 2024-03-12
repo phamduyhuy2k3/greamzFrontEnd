@@ -357,7 +357,7 @@ async function isEmailExisted (value ) {
     return true;
   }
   const { data, error } = await useFetch(
-      config.public.apiUrl+"/api/v1/auth/validate-email/" + value,
+      "/api/server/v1/auth/validate-email/" + value,
       {
         method: "GET"
       },
@@ -372,7 +372,7 @@ async function isEmailExisted (value ) {
 const isUsernameExisted=async (value)=> {
   if(!value) return true
   const { data, error } = await useFetch(
-      config.public.apiUrl+ "/api/v1/auth/validate-username/" + value,
+      "/api/server/v1/auth/validate-username/" + value,
       {
         method: "GET",
 
@@ -466,7 +466,7 @@ const sendOtpRequest =async () => {
   emailCurrent.value = registerData.email;
   const {error}=await useAsyncData('send-otp_'+otpForVerify.value,
       ()=>
-          $fetch(config.public.apiUrl+"/api/v1/auth/send-otp-email", {
+          $fetch("/api/server/v1/auth/send-otp-email", {
             method: "POST",
             body: JSON.stringify({
               email: emailCurrent.value,

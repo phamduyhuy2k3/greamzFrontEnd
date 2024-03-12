@@ -104,7 +104,7 @@ async function isEmailExisted(value) {
   if (!value) return true
 
   const {data, error} = await useFetch(
-      config.public.apiUrl + "/api/v1/auth/validate-email-provider-local/" + value,
+      "/api/server/v1/auth/validate-email-provider-local/" + value,
       {
         method: "GET",
       },
@@ -147,7 +147,7 @@ const sendRequest = async () => {
   }
   pending.value = true
   const {data, error} = await useFetch(
-      config.public.apiUrl + "/api/v1/auth/send-reset-password-email",
+      "/api/server/v1/auth/send-reset-password-email",
       {
         key: 'resetpassword' + Math.random() + 1000,
         method: "POST",

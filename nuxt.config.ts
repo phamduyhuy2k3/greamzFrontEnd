@@ -20,7 +20,6 @@ export default defineNuxtConfig({
         "solana-wallets-vue/styles.css"
 
     ],
-
     ssr: false,
     devtools: {enabled: false},
     modules: [
@@ -29,7 +28,8 @@ export default defineNuxtConfig({
         "nuxt-icon",
         "@nuxtjs/i18n",
         '@vueuse/nuxt',
-        'nuxt-gtag'
+        'nuxt-gtag',
+        '@nuxtjs/device'
     ],
 
     gtag: {
@@ -43,8 +43,8 @@ export default defineNuxtConfig({
         storesDirs: ["~/stores"],
     },
     runtimeConfig: {
+        apiBaseUrl: process.env.API_BASE_URL || "http://localhost:8080",
         public: {
-            apiUrl: process.env.NUXT_SPRING_BOOT_SERVER_API || "http://localhost:8080",
             ENV: process.env.ENV || "dev",
             appUrl: process.env.NUXT_APP_URL || "http://localhost:3000",
         },
@@ -61,6 +61,7 @@ export default defineNuxtConfig({
     },
     tailwindcss: {
         viewer: false,
+
 
     },
 
@@ -82,9 +83,9 @@ export default defineNuxtConfig({
             },
         },
         resolve: {
-            alias: {
-                '@': path.resolve(__dirname, 'src'),
-            }
+            // alias: {
+            //     '@': path.resolve(__dirname, 'src'),
+            // }
         },
         define: {
             "process.env.BROWSER": true,

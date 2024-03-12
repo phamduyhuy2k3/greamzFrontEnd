@@ -4,10 +4,10 @@
 
 <script setup>
 const date=new Date()
-const config=useRuntimeConfig()
+
 const {data}=await useAsyncData(`topSeller`,
     ()=>
-        $fetch(`${config.public.apiUrl}/api/v1/dashboard/getTopSellingClient`,{
+        $fetch(`/api/server/v1/dashboard/getTopSellingClient`,{
           method:'GET',
           query:{
             year:date.getFullYear(),

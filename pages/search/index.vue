@@ -1,139 +1,113 @@
 <template>
-  <div class="px-10  text-black  bg-transparent" >
-    <BreadCrumb :breadcrumbs="userBreadCrumb().breadcrumbs"></BreadCrumb>
+  <div class="px-10  text-black  bg-transparent">
+    <div class="flex flex-col">
+      <div class="flex items-center justify-between">
+        <fieldset class="w-[70%]">
+          <legend class="text-[1.2rem] font-semibold text-white">Categories</legend>
+          <n-tree-select
+              multiple
+              checkable
+              filterable
+              v-model:value="valueCategories"
+              placeholder="Select categories"
+              :clear-filter-after-select="false"
+              clearable
+              :options="categories"
+              @update:value="onSelect()"
 
-    <div class="grid grid-cols-12 gap-4 bg-transparent  ">
-      <div class="pt-[90px] col-span-3 h-full">
-        <div class="sticky top-[12%] overflow-y-auto  card bg-[#BCC7CA] p-3 ">
-          <div class="text-[1.8rem] text-center">Filter</div>
-          <div class="flex flex-col gap-8 ">
+          />
+        </fieldset>
 
-            <fieldset>
-              <legend class="text-[1.2rem]">Categories</legend>
-              <n-tree-select
-                  multiple
-                  checkable
-                  filterable
-                  v-model:value="valueCategories"
+        <fieldset class="w-[20%]">
+          <legend class="text-[1.2rem] font-semibold text-white">Sort by</legend>
+          <n-select
+              filterable
+              v-model:value="valueSorBy"
 
-                  placeholder="Select categories"
-                  :clear-filter-after-select="false"
-                  clearable
-                  :options="categories"
-                  @update:value="onSelect()"
+              placeholder="Sort by"
+              :clear-filter-after-select="false"
+              clearable
+              :options="sortBys"
+              @update:value="onSelect()"
 
-              />
-            </fieldset>
-<!--            <fieldset>-->
-<!--              <legend class="text-[1.2rem]">Platforms</legend>-->
-<!--              <n-tree-select-->
-<!--                  multiple-->
-<!--                  checkable-->
-<!--                  filterable-->
-<!--                  v-model:value="valuePlatform"-->
+          />
+        </fieldset>
+      </div>
 
-<!--                  placeholder="Select platforms"-->
-<!--                  :clear-filter-after-select="false"-->
-<!--                  clearable-->
-<!--                  :options="platforms"-->
-<!--                  @update:value="onSelect()"-->
-
-<!--              />-->
-<!--            </fieldset>-->
-            <fieldset>
-              <legend class="text-[1.2rem]">Sort by</legend>
-              <n-select
-                  filterable
-                  v-model:value="valueSorBy"
-
-                  placeholder="Sort by"
-                  :clear-filter-after-select="false"
-                  clearable
-                  :options="sortBys"
-                  @update:value="onSelect()"
-
-              />
-            </fieldset>
-
-            <div>
-              <span class="text-[1.2rem]">
+      <div class="flex items-center justify-center gap-3 text-white mt-2">
+              <span class="text-[1.2rem] font-semibold ">
               Price between:
               </span>
-              <div class="flex gap-2">
-                <div class="flex flex-col">
-                  <span>Min</span>
-                  <n-input-number
-                      :default-value="0"
-                      :parse="parseCurrency"
-                      :format="formatCurrency"
-                      v-model:value="priceMin"
-                      :step="100000"
-                  />
-<!--                  <input type="number" v-model="priceMin"  class="w-[100px] border rounded-lg p-2" placeholder="min"-->
-<!--                         step="100000">-->
-                </div>
-                <div class="flex flex-col">
-                  <span>Max</span>
-                  <n-input-number
-                      :default-value="0"
-                      :parse="parseCurrency"
-                      :format="formatCurrency"
-                      v-model:value="priceMax"
-                      :step="100000"
-                  />
-<!--                  <input type="number" v-model="priceMax" class="w-[100px] border rounded-lg p-2" placeholder="max"-->
-<!--                         step="100000">-->
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="flex flex-col">
+          <span>Min</span>
+          <n-input-number
+              :default-value="0"
+              :parse="parseCurrency"
+              :format="formatCurrency"
+              v-model:value="priceMin"
+              :step="100000"
+          />
+          <!--                  <input type="number" v-model="priceMin"  class="w-[100px] border rounded-lg p-2" placeholder="min"-->
+          <!--                         step="100000">-->
+        </div>
+        <div class="flex flex-col">
+          <span>Max</span>
+          <n-input-number
+              :default-value="0"
+              :parse="parseCurrency"
+              :format="formatCurrency"
+              v-model:value="priceMax"
+              :step="100000"
+          />
+          <!--                  <input type="number" v-model="priceMax" class="w-[100px] border rounded-lg p-2" placeholder="max"-->
+          <!--                         step="100000">-->
         </div>
       </div>
-      <div  class="col-span-9 overflow-y-auto relative h-full ">
-        <div class="sticky top-0 ">
-          <div class="relative">
-            <div
-                class="text-white absolute inset-y-0 left-0 flex items-center pr-3 font-medium text-sm px-4 py-2 ">
-              <svg class="w-4 h-4 text-white " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                   viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-              </svg>
-            </div>
-            <input type="search" id="default-search"
-                   @input="debounce(onSelect(), 800)"
-                   v-model="search"
-                   class="block w-full  pl-11 text-sm text-gray-900 border rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 bg-gray-700 border-gray-600 placeholder-gray-400 text-white "
-                   placeholder="Search games">
-
-          </div>
+    </div>
+    <div class="sticky top-1 mt-2" style="z-index: 12">
+      <div class="relative">
+        <div
+            class="text-white absolute inset-y-0 left-0 flex items-center pr-3 font-medium text-sm px-4 py-2 ">
+          <svg class="w-4 h-4 text-white " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+          </svg>
         </div>
-        <div v-if="pending" class="flex justify-center pt-16 text-white">
-          <span  class="loading loading-dots loading-lg"></span>
-        </div>
-        <div class="px-4" v-if="!pending" >
-
-          <template v-if="!data.empty">
-            <InfiniteScrollGameCard :pager="data"/>
-          </template>
-          <template v-else>
-            <div class="flex justify-center items-center  text-white ">
-              <span class="text-2xl">No games found</span>
-            </div>
-          </template>
-        </div>
-        <Pagination v-if="!data.empty" :totalPages="data.totalPages" :current-page="data.number"  @page-changed="onPageAndSizeChange" :size-current-page="data.size"/>
+        <input type="search" id="default-search"
+               @input="debounce(onSelect(), 800)"
+               v-model="search"
+               class="block w-full  pl-11 text-sm text-gray-900 border rounded bg-gray-50 focus:ring-blue-500 focus:border-blue-500 bg-gray-700 border-gray-600 placeholder-gray-400 text-white "
+               placeholder="Search games">
 
       </div>
+    </div>
+    <div class="overflow-y-auto relative h-full ">
+
+      <div v-if="pending" class="flex justify-center pt-16 text-white">
+        <span class="loading loading-dots loading-lg"></span>
+      </div>
+      <div class="px-4" v-if="!pending">
+
+        <template v-if="!data.empty">
+          <InfiniteScrollGameCard :pager="data"/>
+        </template>
+        <template v-else>
+          <div class="flex justify-center items-center  text-white ">
+            <span class="text-2xl">No games found</span>
+          </div>
+        </template>
+      </div>
+      <Pagination v-if="!data.empty" :totalPages="data.totalPages" :current-page="data.number"
+                  @page-changed="onPageAndSizeChange" :size-current-page="data.size"/>
 
     </div>
   </div>
 </template>
 <script setup>
-useHead( {
-  title: 'Search'
-})
+
 import {debounce} from "lodash/function.js";
+
 const categories = ref([])
 const platforms = ref([])
 const parseCurrency = (input) => {
@@ -141,16 +115,16 @@ const parseCurrency = (input) => {
   if (/^\d+(\.(\d+)?)?$/.test(nums)) return Number(nums)
   return nums === '' ? null : Number.NaN
 }
-const formatCurrency=(value ) => {
+const formatCurrency = (value) => {
   if (value === null) return ''
   return `${value.toLocaleString('en-US')} \u20ab`
 }
 const sortBys = [
   {
-    value: "createdAt_DESC",
+    value: "createdOn_DESC",
     label: 'Newest'
   }, {
-    value: "createdAt_ASC",
+    value: "createdOn_ASC",
     label: 'Oldest'
   },
   {
@@ -211,9 +185,9 @@ watch([priceMin, priceMax], ([newMin, olMin], [newMax, oldMax]) => {
 
   onSelect()
 })
-const {data, execute,refresh,pending} = await useAsyncData('gamesFilter-' + routeQuery,
-    ()=>
-        $fetch(`${useRuntimeConfig().public.apiUrl}/api/v1/game/filter`, {
+const {data, execute, refresh, pending} = await useAsyncData('gamesFilter-' + routeQuery,
+    () =>
+        $fetch(`/api/server/v1/game/filter`, {
 
           method: 'get',
           query: {
@@ -229,7 +203,7 @@ const {data, execute,refresh,pending} = await useAsyncData('gamesFilter-' + rout
           },
         })
 )
-const onPageAndSizeChange=async (page,size) => {
+const onPageAndSizeChange = async (page, size) => {
   await router.push({
     path: '/search/',
     query: {
@@ -240,8 +214,7 @@ const onPageAndSizeChange=async (page,size) => {
     }
   })
   await execute().then(() => {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    // For Chrome, Firefox, IE and Opera
   })
 }
 const onSelect = async () => {
@@ -260,8 +233,7 @@ const onSelect = async () => {
     }
   })
   await execute().then(() => {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    // For Chrome, Firefox, IE and Opera
   })
 
 }

@@ -15,24 +15,24 @@
       </div>
 
       <div class="grid grid-rows-2 xl:grid-cols-12">
-        <div :class="{'h-full': toggleCart, 'h-[600px]': !toggleCart}" class="xl:col-span-8   overflow-hidden relative cart_container">
+        <div  class="xl:col-span-8 h-full relative cart_container">
 
           <div class="flex flex-col">
-            <LazyGameCardHorizonal v-for="cart in items" :item="cart" class="mt-3"/>
+            <LazyGameCardHorizonal v-for="cart in getItems" :item="cart" class="mt-3"/>
             <button v-if="toggleCart" class="mx-auto" @click="handleToggleCart()">
 
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8l-8 8z"/></svg>
             </button>
-            <template v-if="(getCartItemCount>=4 && !isMobile&& !toggleCart) || (getCartItemCount>=2 && isMobile&& !toggleCart) ">
-              <button  class="see-more-btn" @click="handleToggleCart()">See More</button>
-              <div class="cart_item_blur">
-              </div>
-            </template>
+<!--            <template v-if="(getCartItemCount>=4 && !isMobile&& !toggleCart) || (getCartItemCount>=2 && isMobile&& !toggleCart) ">-->
+<!--              <button  class="see-more-btn" @click="handleToggleCart()">See More</button>-->
+<!--              <div class="cart_item_blur">-->
+<!--              </div>-->
+<!--            </template>-->
 
           </div>
 
         </div>
-        <div class="xl:col-span-4 xl:sticky xl:top-[25%]">
+        <div class="xl:col-span-4 xl:sticky xl:top-[15%]">
           <LazyOrderSummary/>
         </div>
       </div>
@@ -43,13 +43,13 @@
 <script setup>
 
 const toggleCart = ref(false);
-const {getCartItemCount,items}=useCart()
+const {getItems}=storeToRefs(useCart())
+
 const handleToggleCart = () => {
   toggleCart.value = !toggleCart.value;
 };
 const {breadcrumbs}= userBreadCrumb();
-const {updateCartFromDatabase}=useCart();
-const isMobile=useState('isMobile');
+
 </script>
 
 <style scoped>

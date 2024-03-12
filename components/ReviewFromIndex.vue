@@ -57,7 +57,6 @@ const {review}= defineProps({
   }
 });
 
-console.log(review)
 const reviewRef=ref({
   reacted: review.reacted,
   reactionType: review.reactionType,
@@ -70,7 +69,6 @@ const isButtonVisible = computed(() => review.text.length > charLimit);
 const truncatedContent = computed(() =>
     isButtonVisible.value && isCollapsed.value ? `${review.text.substring(0, charLimit)}...` : review.text,
 );
-const config=useRuntimeConfig()
 const reaction=async (isReacted,reactType)=>{
   console.log(isReacted,reactType)
   const {userProfile}=useAuthStore()
@@ -86,18 +84,17 @@ const reaction=async (isReacted,reactType)=>{
     userId: userProfile.id,
   }
 
-  const {data}=await useAsyncData('reactTheReview_'+Math.random()*10000,
+  const {data}=await useAsyncData('reactTheReview',
       ()=>
-          $fetch(`${config.public.apiUrl}/api/v1/review/react`,{
+          $fetch(`${config.public.apiUrl}/api/server/v1/review/react`,{
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer '+useAuthStore().token,
+              'Authorization': 'Bearer',
             },
             body: JSON.stringify(payload)
           }),
   )
-  console.log(data.value)
   if(data.value){
     reviewRef.value=data.value
   }

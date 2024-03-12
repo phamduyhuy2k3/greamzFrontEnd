@@ -116,17 +116,15 @@ definePageMeta({
     console.log(token)
     const {data,error}=await useAsyncData('checkToken_'+token,
         ()=>
-            $fetch(`${useRuntimeConfig().public.apiUrl}/api/v1/auth/reset-password`,{
+            $fetch(`/api/server/v1/auth/reset-password`,{
               method:"GET",
               query:{
                 token:token
               }
             })
     );
-    if(error.value){
-      return false
-    }
-    return true
+    return !error.value;
+
   }
 })
 import {
@@ -203,7 +201,7 @@ const sendRequest=async ()=>{
   pending.value=true
   const {error}=await  useAsyncData('reset_password'+Math.random()*100,
       ()=>
-          $fetch(`${config.public.apiUrl}/api/v1/auth/reset-password`,{
+          $fetch(`/api/server/v1/auth/reset-password`,{
             method:"POST",
             body:JSON.stringify({
               token:route.query.token,

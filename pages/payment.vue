@@ -64,22 +64,22 @@
                 <tbody class="">
                 <tr v-for="item in useCart().items"  class="text-[12px] text-center bg-gray-800 border-gray-700 hover:bg-gray-600">
                   <td class="pl-1">
-                    <img :src="item.header_image" :alt="item.name" >
+                    <img :src="item.game.header_image" :alt="item.name" >
                   </td>
                   <th scope="row" class="px-6 py-4 font-bold text-white whitespace-nowrap truncate">
-                    {{item.name  }}
+                    {{item.game.name  }}
                   </th>
                   <th scope="row" class="px-6 py-4 font-bold text-white whitespace-nowrap truncate">
                     {{item.platform.name  }}
                   </th>
                   <td class="px-6 py-4">
-                    {{ $currency(item.price)}}
+                    {{ $currency(item.game.price)}}
                   </td>
                   <td class="px-6 py-4">
                     {{ item.quantity }}
                   </td>
                   <td class="px-6 py-4">
-                    {{ item.discount? item.discount +'%' : 'None' }}
+                    {{ item.game.discount? item.game.discount +'%' : 'None' }}
                   </td>
                   <td class="px-6 py-4">
                     {{ $currency(useCart().amtOf(item) )}}

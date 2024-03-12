@@ -1,10 +1,7 @@
 <script>
-import Swal from "sweetalert2";
 
-definePageMeta({
-  key: 'setting-security',
-  middleware: ['auth']
-})
+
+
 import {
   required,
   email,
@@ -19,9 +16,7 @@ import {useVuelidate} from "@vuelidate/core";
 import {useMessage} from 'naive-ui'
 import VOtpInput from "vue3-otp-input";
 export default {
-  components: {
-    VOtpInput
-  },
+  middleware: ['auth'],
   methods: {
     async changeEmailHandle() {
       const isFormValid = await this.vEmail$.$validate();
@@ -33,7 +28,7 @@ export default {
       }
       const {data,error} = await useAsyncData('changeEmail_validate_password',
           () =>
-              $fetch(`${this.config.public.apiUrl}/api/v1/user/change-email-step-1`, {
+              $fetch(`/api/server/v1/user/change-email-step-1`, {
                 method: 'POST',
                 headers: {
                   'Authorization': `Bearer ${this.token}`
@@ -61,7 +56,7 @@ export default {
       }
       const {data} = await useAsyncData('changePassword',
           () =>
-              $fetch(`${this.config.public.apiUrl}/api/v1/user/change-password`, {
+              $fetch(`/api/server/v1/user/change-password`, {
                 method: 'POST',
                 headers: {
                   'Authorization': `Bearer ${this.token}`
@@ -90,7 +85,7 @@ export default {
           .random() * (maxm - minm + 1)) + minm;
       const {error}=await useAsyncData('send-otp',
           ()=>
-              $fetch(this.config.public.apiUrl+"/api/v1/auth/send-otp-email", {
+              $fetch("/api/server/v1/auth/send-otp-email", {
                 method: "POST",
                 body: JSON.stringify({
                   email: this.changeEmail.confirmNewEmail,
@@ -111,14 +106,11 @@ export default {
     async validateOtp(){
       this.pending = true
       let otp=parseInt(this.otp)
-      console.log(this.otpForVerify)
-      console.log(otp)
-      console.log(this.otpForVerify===otp)
-      console.log(this.changeEmail)
+
       if(otp===this.otpForVerify){
         const {data,error} = await useAsyncData('changeEmail_validate_password',
             () =>
-                $fetch(`${this.config.public.apiUrl}/api/v1/user/change-email-step-2`, {
+                $fetch(`/api/server/v1/user/change-email-step-2`, {
                   method: 'POST',
                   headers: {
                     'Authorization': `Bearer ${this.token}`
@@ -126,8 +118,6 @@ export default {
                   body: JSON.stringify(this.changeEmail)
                 })
         )
-        console.log(data)
-        console.log(error)
         if(error.value){
           this.message.error(this.$t('profile.security.changeEmail.alert.error'))
           this.pending = false
@@ -160,6 +150,7 @@ export default {
     const {userProfile, setProfile, token,refreshToken,setToken,logUserOut} = useAuthStore()
     const emailRef = ref(userProfile.email)
     const config = useRuntimeConfig()
+
     async function isEmailExisted (value ) {
       if(!value) return true
       const emailRegex = /^(?:[A-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9]{2,}(?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/i;
@@ -167,7 +158,7 @@ export default {
         return true;
       }
       const { data, error } = await useFetch(
-          config.public.apiUrl+"/api/v1/auth/validate-email/" + value,
+          "/api/server/v1/auth/validate-email/" + value,
           {
             method: "GET"
           },
@@ -428,15 +419,9 @@ export default {
                   Please check your email and paste the code below.
                 </div>
                 <div class="flex flex-wrap">
-                  <VOtpInput
-                      ref="otpInput"
-                      v-model:value="otp"
-                      input-classes="otp-input"
-                      separator="-"
-                      :num-inputs="6"
-                      :should-auto-focus="true"
-                      input-type="number"
+                  <Otp
 
+                      v-model="otp"
                   />
                 </div>
                 <div class="text-caption ">

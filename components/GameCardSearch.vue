@@ -14,11 +14,11 @@
       </div>
 
     </div>
-    <div class="flex justify-between items-center">
+    <div class="flex text-white justify-between items-center">
       <div>
         {{item.name}}
       </div>
-      <span class="font-bold sm:order-1 typography-text-sm sm:typography-text-lg">{{$currency(item.price)}} </span>
+      <span class="font-bold text-white sm:order-1 typography-text-sm sm:typography-text-lg">{{$currency(item.price)}} </span>
     </div>
   </NuxtLink>
 </template>

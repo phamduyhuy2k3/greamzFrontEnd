@@ -1,6 +1,6 @@
 <script setup>
 import {initFlowbite} from "flowbite";
-
+const{fetch}=useCart()
 const config=useRuntimeConfig();
 const target = ref(null)
 useHead(() => {
@@ -20,24 +20,20 @@ useHead(() => {
 });
 onMounted(async () => {
   initFlowbite();
-  window.addEventListener('resize', handleResize);
+
+  await fetch();
 
 })
-useState('isMobile',()=>window.innerWidth<1025);
 if(config.public.ENV=='production'){
   console.log=function(){};
 }
-const handleResize=()=> {
-  const result= useState('isMobile');
-  result.value=window.innerWidth<1025;
-  console.log(result.value);
-}
+
 </script>
 <template>
   <NuxtLayout>
-    <NuxtLoadingIndicator >
-    </NuxtLoadingIndicator>
     <n-message-provider >
+      <NuxtLoadingIndicator >
+      </NuxtLoadingIndicator>
       <NuxtPage ref="page" />
     </n-message-provider>
   </NuxtLayout>

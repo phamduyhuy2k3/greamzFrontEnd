@@ -9,7 +9,7 @@ export const useCategory = defineStore("category",  () => {
         if(categories.value.length>0) {
             return;
         }
-        await useFetch(`${useRuntimeConfig().public.apiUrl}/api/v1/category/findAllFromClient`, {
+        await useFetch(`/api/server/v1/category/findAllFromClient`, {
             method: 'GET',
             transform: (data) => {
                 categories.value = data;
