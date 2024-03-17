@@ -2,16 +2,16 @@
   <div class="w-full relative " style="z-index: 10">
     <img
       class="w-full h-auto max-w-full flex"
-
+      alt="asds"
       src="/img/home_header_bg_rainy_english.gif"
    />
 
-    <Navbar  v-show="!isMobile" />
+    <Navbar  />
   </div>
 </template>
 
 <script setup>
-const isMobile = useState('isMobile')
+
 </script>
 
 <style scoped></style>

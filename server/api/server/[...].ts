@@ -2,6 +2,8 @@ import {defineEventHandler, getCookie,setCookie, getHeaders, getQuery, readBody,
 import {$fetch} from "ofetch";
 const config = useRuntimeConfig()
 const baseURL = config.apiBaseUrl
+const appUrl = config.public.appUrl
+const env=config.public.ENV
 const refreshTokenEndpoint = `${baseURL}/api/v1/auth/refresh-token`
 export default defineEventHandler(async (event) => {
     const method = event.method
@@ -58,11 +60,15 @@ export default defineEventHandler(async (event) => {
                         httpOnly: true,
                         path: '/',
                         maxAge: refreshResponse.expires_in*60,
+                        domain:  '.'+new URL(appUrl).hostname,
+                        secure: env !== "dev"
                     })
                     setCookie(event, 'refresh_token', refreshResponse.refresh_token, {
                         httpOnly: true,
                         path: '/',
                         maxAge: refreshResponse.refresh_token_expires_in*60,
+                        domain:  '.'+new URL(appUrl).hostname,
+                        secure: env !== "dev"
                     })
                     authorization = `Bearer ${refreshResponse.access_token}`;
 
@@ -89,11 +95,15 @@ export default defineEventHandler(async (event) => {
                     httpOnly: true,
                     path: '/',
                     maxAge: response._data['expires_in']*60,
+                    domain:  '.'+new URL(appUrl).hostname,
+                    secure: env !== "dev"
                 })
                 setCookie(event, 'refresh_token', response._data['refresh_token'], {
                     httpOnly: true,
                     path: '/',
                     maxAge: response._data['refresh_token_expires_in']*60,
+                    domain:  '.'+new URL(appUrl).hostname,
+                    secure: env !== "dev"
                 })
             }
             if(request.toString().includes('/api/v1/auth/logout')){

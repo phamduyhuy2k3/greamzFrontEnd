@@ -1,8 +1,6 @@
 <script setup>
 import {initFlowbite} from "flowbite";
-const{fetch}=useCart()
 const config=useRuntimeConfig();
-const target = ref(null)
 useHead(() => {
   return {
     title: "Greamz",
@@ -21,12 +19,10 @@ useHead(() => {
 onMounted(async () => {
   initFlowbite();
 
-  await fetch();
-
 })
-if(config.public.ENV!='dev'){
-  console.log=function(){};
-}
+// if(config.public.ENV!='dev'){
+//   console.log=function(){};
+// }
 
 </script>
 <template>
@@ -34,7 +30,7 @@ if(config.public.ENV!='dev'){
     <n-message-provider >
       <NuxtLoadingIndicator >
       </NuxtLoadingIndicator>
-      <NuxtPage ref="page" />
+      <NuxtPage  />
     </n-message-provider>
   </NuxtLayout>
 </template>

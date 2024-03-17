@@ -29,18 +29,7 @@ export const useCart = defineStore("cartStore", () => {
             })
         }
         if (result) {
-            const index = items.value.findIndex((cartItem) => {
-                return cartItem?.game.appid === item.appid && cartItem?.platform.id === item.platform.id;
-            })
-            if (index > -1) {
-                items.value[index] = {
-                    ...result,
-
-                }
-            } else {
-                items.value.push(result);
-            }
-
+            await fetch();
             Swal.fire({
                 position: 'center',
                 icon: 'success',
@@ -116,12 +105,16 @@ export const useCart = defineStore("cartStore", () => {
 
     }
     const fetch = async () => {
-        await fetchCart().then((data) => {
+       return  await fetchCart().then((data) => {
             if (data) {
                 items.value = data;
+                return data;
+            }else {
+                items.value = [];
             }
-            console.log(data)
+
         });
+
     }
     const changeQuantity = async (cartId, quantity) => {
         const result = await update(cartId, quantity)
@@ -135,13 +128,10 @@ export const useCart = defineStore("cartStore", () => {
             }
         }
     }
-    const removeFromCart = (item, isSwal = true) => {
+    const removeFromCart =async (item, isSwal = true) => {
         if (!isSwal) {
-            remove(item.id).then(() => {
-                items.value = items.value.filter((cartItem) => {
-                    return cartItem?.id !== item.id;
-                })
-            })
+            await remove(item.id)
+            await fetch();
             return;
         }
         Swal.fire({
@@ -157,9 +147,8 @@ export const useCart = defineStore("cartStore", () => {
 
                 const result = await remove(item.id)
                 if (result) {
-                    items.value = items.value.filter((cartItem) => {
-                        return cartItem?.id !== item.id;
-                    })
+                    await remove(item.id)
+                    await fetch();
                     Swal.fire(
                         'Deleted!',
                         'Your item has been removed from cart.',

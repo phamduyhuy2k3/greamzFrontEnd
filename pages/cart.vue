@@ -17,7 +17,7 @@
         <div  class="xl:col-span-8 h-full relative cart_container">
 
           <div v-if="!loading" class="flex flex-col">
-            <LazyGameCardHorizonal v-for="cart in getItems" :item="cart" class="mt-3"/>
+            <LazyGameCardHorizonal v-for="cart in $state.items" :item="cart" class="mt-3"/>
             <button v-if="toggleCart" class="mx-auto" @click="handleToggleCart()">
 
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8l-8 8z"/></svg>
@@ -47,16 +47,14 @@
 const toggleCart = ref(false);
 const {fetch}=useCart()
 
-const {getItems}=storeToRefs(useCart())
+const {$state}=useCart()
 
 const handleToggleCart = () => {
   toggleCart.value = !toggleCart.value;
 };
 const loading = ref(true);
-onMounted(()=>{
-  fetch().then(()=>{
-    loading.value=false
-  })
+await fetch().then((data)=>{
+  loading.value=false
 })
 
 </script>

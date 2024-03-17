@@ -49,9 +49,9 @@ await getGameDetails(gameId).then((data) => {
     header_image: gameDetail.header_image,
     platform: gameDetail.platforms[0],
   }
-  aboutDescription.value = JSON.parse(gameDetail.about_the_game)
-  detailDescription.value = JSON.parse(gameDetail.detailed_description)
-  shortDescription.value = JSON.parse(gameDetail.short_description)
+  // aboutDescription.value = JSON.parse(gameDetail.about_the_game)
+  // detailDescription.value = JSON.parse(gameDetail.detailed_description)
+  // shortDescription.value = JSON.parse(gameDetail.short_description)
   plafomIds.value=gameDetail.platforms.map((pl)=>pl.id)
   categoryIds.value=gameDetail.categories.map((cate)=>cate.id)
 })
@@ -102,8 +102,8 @@ async function AddToCart() {
 useSeoMeta({
   title: gameDetail.name,
   ogTitle: gameDetail.name,
-  description: gameDetail.short_description,
-  ogDescription: gameDetail.short_description,
+  // description: gameDetail.short_description,
+  // ogDescription: gameDetail.short_description,
   ogImage: gameDetail.header_image,
   twitterCard: 'summary_large_image',
 })

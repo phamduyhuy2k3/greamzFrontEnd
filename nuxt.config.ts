@@ -43,10 +43,10 @@ export default defineNuxtConfig({
         storesDirs: ["~/stores"],
     },
     runtimeConfig: {
-        apiBaseUrl:  "http://localhost:8080/",
+        apiBaseUrl:  "http://localhost:8080",
         public: {
-            ENV: "dev",
-            appUrl:  "http://localhost:3000",
+            ENV: process.env.NUXT_ENV||"dev",
+            appUrl: process.env.NUXT_APP_URL,
         },
     },
     appConfig:{

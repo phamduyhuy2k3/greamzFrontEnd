@@ -33,6 +33,10 @@ export  const useAuthStore = defineStore("auth", () => {
             if (data.value) {
 
                 loading.value = false
+                await useFetch("/api/client/token",{
+                    method: "POST",
+                    body: data.value
+                })
                 return true;
             }
         }
@@ -60,6 +64,7 @@ export  const useAuthStore = defineStore("auth", () => {
             }
             if (data.value) {
                 loading.value = false
+
                 return true;
             }
         }
@@ -70,7 +75,7 @@ export  const useAuthStore = defineStore("auth", () => {
                 {
                     method: "GET",
                     headers: {
-                        'Authorization': 'Bearer '
+                        'Authorization': 'Bearer'
                     }
 
                 })

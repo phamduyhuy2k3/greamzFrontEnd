@@ -333,7 +333,7 @@ import {
 import { useVuelidate } from "@vuelidate/core";
 import Swal from "sweetalert2";
 const router = useRouter();
-const { authRegisterUser } = useAuthStore();
+const { authRegisterUser,getUserProfile } = useAuthStore();
 const { loading, authenticated } = storeToRefs(useAuthStore());
 const config=useRuntimeConfig()
 const step = ref(1);
@@ -515,10 +515,13 @@ const register = async () => {
   }
   const res = await authRegisterUser(registerData);
   if (res === true) {
-    router.push({
-      path: "/login",
-      query: { registered: "true" },
+    await getUserProfile().then(() => {
+      router.push({
+        path: "/",
+        query: { registered: "true" },
+      });
     });
+
   }
 };
 </script>

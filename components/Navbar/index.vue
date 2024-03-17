@@ -114,7 +114,7 @@
       </lazy-client-only>
     </ul>
   </nav>
-  <n-drawer class="bg-[#171a21]" width="500"  v-model:show="drawerActive"  placement="left" >
+  <n-drawer class="bg-[#171a21]"  v-model:show="drawerActive"  placement="left" >
     <n-drawer-content >
       <template #header>
         <NuxtLink exact-active-class="g2398f238fh8392gy8u34fgyuw3rg" to="/" title="home" class="flex items-center border-0 text-white">

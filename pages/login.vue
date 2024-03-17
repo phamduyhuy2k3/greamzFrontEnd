@@ -164,6 +164,7 @@ const oauthLogin = async (provider) => {
   const config = useRuntimeConfig()
 
   const {data} = await useFetch('/api/client/baseurl')
+
   const AUTH_URL = `${data.value}/oauth2/authorize/${provider}?redirect_uri=${config.public.appUrl }`;
   window.location.href = AUTH_URL;
 
