@@ -211,10 +211,7 @@ export const useCart = defineStore("cartStore", () => {
             },
             totalPrice: promo > 0 ? getCartTotal.value - promo : getCartTotal.value,
             ordersDetails: items.value.map(item => ({
-                game: {
-
-                    appid: item.game.appid,
-                },
+                game: item.game,
                 discount: item.game.discount || 0,
                 platform: item.platform,
                 quantity: item.quantity,

@@ -12,6 +12,15 @@ useHead({
     },
   ],
 });
+const route=useRoute()
+if(route.query?.access_token){
+  await useFetch("/api/client/token",{
+    method: "POST",
+    body: {
+
+    }
+  })
+}
 </script>
 <template>
   <JumBoTron />

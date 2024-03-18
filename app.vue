@@ -16,13 +16,14 @@ useHead(() => {
     }
   };
 });
+if(config.public.ENV!='dev'){
+  console.log=function(){};
+}
 onMounted(async () => {
   initFlowbite();
 
 })
-// if(config.public.ENV!='dev'){
-//   console.log=function(){};
-// }
+
 
 </script>
 <template>

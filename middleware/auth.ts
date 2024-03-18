@@ -1,7 +1,6 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    const {getAuthenticated, getUserProfile} = useAuthStore()
-
-    if (!getAuthenticated ) {
+    const {getAuthenticated} = storeToRefs(useAuthStore())
+    if (!getAuthenticated.value ) {
 
         return navigateTo({
             path: from.path===to.path?"/":from.path,

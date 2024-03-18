@@ -21,7 +21,7 @@ export  const useAuthStore = defineStore("auth", () => {
             );
             loading.value = pending;
             if (error.value) {
-
+                console.log(error)
                 if (error.value?.data?.error === "User is disabled") {
                     return "Your account is disabled. Please contact the administrator";
                 }
@@ -31,7 +31,7 @@ export  const useAuthStore = defineStore("auth", () => {
                 return false;
             }
             if (data.value) {
-
+                console.log(data.value)
                 loading.value = false
                 await useFetch("/api/client/token",{
                     method: "POST",
@@ -107,7 +107,12 @@ export  const useAuthStore = defineStore("auth", () => {
             authenticated.value = true;
             await getUserProfile()
         }
-
+        function clearToken() {
+            const act=useCookie("access_token")
+            const ref=useCookie("refresh_token")
+            act.value=null
+            ref.value=null
+        }
 
 
         async function logUserOut() {
@@ -120,7 +125,9 @@ export  const useAuthStore = defineStore("auth", () => {
             })
             userProfile.value = {} as UserProfile;
             authenticated.value = false;
+            clearToken()
             clearItems()
+
             navigateTo({
                 path: '/login',
                 query: {

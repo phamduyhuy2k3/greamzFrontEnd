@@ -2,7 +2,7 @@
 import { IconFlagEN, IconFlagVN } from "#components";
 const { setLocaleCookie, locale } = useI18n();
 const localeCookie = useCookie("i18n_redirected");
-const {getAuthenticated,$state}=useAuthStore()
+const {userProfile,authenticated}=storeToRefs(useAuthStore())
 const scroll = ref(0);
 const languages = [
   {
@@ -139,7 +139,7 @@ onMounted(() => {
           </div>
           <div class="dropdown dropdown-hover" style="z-index: 231321">
 
-            <NuxtLink v-if="!getAuthenticated" to="/login"  class="inline-flex items-center mr-2 font-medium justify-center px-4 py-2 text-sm text-gray-900 rounded-lg cursor-pointer hover:bg-[#0ea5e9] text-white">
+            <NuxtLink v-if="!authenticated" to="/login"  class="inline-flex items-center mr-2 font-medium justify-center px-4 py-2 text-sm text-gray-900 rounded-lg cursor-pointer hover:bg-[#0ea5e9] text-white">
               <IconUser/>
               <span  class="ml-2 hidden md:block">
                 {{$t('login.title')}}
@@ -147,7 +147,7 @@ onMounted(() => {
             </NuxtLink>
             <template v-else>
               <div  tabindex="0" role="button"  class=" md:inline-flex  items-center xl:mr-2 font-medium justify-center xl:px-4 xl:py-2 text-sm text-gray-900 rounded-lg cursor-pointer hover:bg-[#0ea5e9] dark:text-white">
-                <img class="h-8 w-8 rounded-full" :src="$state.userProfile.photo" alt="userAvatar">
+                <img class="h-8 w-8 rounded-full" :src="userProfile.photo" alt="userAvatar">
               </div>
               <ul tabindex="0" class="dropdown-content z-[1] right-0 menu p-2 shadow bg-gray-700 dark:bg-base-100 rounded-box w-52">
                 <li><NuxtLink to="/dash-board/orders">{{$t('dashboard')}}</NuxtLink></li>

@@ -7,7 +7,7 @@ import {
     sendRedirect,
     deleteCookie,
     sendError,
-    readMultipartFormData
+    readMultipartFormData, setCookie
 } from "h3";
 import {$fetch} from "ofetch";
 
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     const headers = getHeaders(event)
     const body = method === "GET" ? undefined : await readBody(event)
     const refreshToken = getCookie(event, 'refresh_token')
-
+    console.log(refreshToken)
     let authorization = headers.authorization;
     if (authorization?.includes('Bearer')) {
         authorization = `Bearer ${refreshToken}`;
@@ -29,21 +29,21 @@ export default defineEventHandler(async (event) => {
     }
     const responseData = await $fetch('/api/v1/auth/logout', {
         headers: {
-            "Content-Type": headers["content-type"] as string,
             Authorization: authorization as string,
 
         },
         baseURL,
         method,
         params,
-        body,
-        onResponse({
-                       response
-                   }): Promise<void> | void {
-            deleteCookie(event, 'refresh_token')
-            deleteCookie(event, 'access_token')
-        }
-    });
+        body
 
+    });
+    setCookie(event, 'refresh_token', '', {
+        maxAge: 0,
+
+    })
+    setCookie(event, 'access_token', '', {
+        maxAge: 0,
+    })
     return responseData
 })

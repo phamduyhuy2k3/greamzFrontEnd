@@ -1,9 +1,8 @@
 
 export default defineNuxtRouteMiddleware(async (to,from) => {
-    const {getAuthenticated} = useAuthStore()
+    const {getAuthenticated} =storeToRefs( useAuthStore())
     const {getItems}=useCart()
-
-    if (!getAuthenticated ) {
+    if (getAuthenticated.value===false ) {
         return navigateTo({
             path: from.path==="/payment"?"/cart":from.path,
             query: {message: "You are not authenticated. Please login first", alert: "info"}

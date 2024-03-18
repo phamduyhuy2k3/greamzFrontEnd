@@ -15,13 +15,15 @@ export default defineEventHandler(async (event) => {
     const url = event.node.req.originalUrl?.replace('/api/server','/api') as string
 
     const body = method === "GET" ? undefined :  await readBody(event)
-    const accessToken=getCookie(event, 'access_token')
+    const accessToken=getCookie(event, 'access_token') as string
+    const refreshToken = getCookie(event, 'refresh_token') as string;
 
     let authorization = headers.authorization;
     if (authorization?.includes('Bearer')) {
         authorization = `Bearer ${accessToken}`;
 
     }
+    console.log(url)
     const responseData = await $fetch(url, {
         headers: {
             "Content-Type": headers["content-type"] as string,
@@ -33,11 +35,12 @@ export default defineEventHandler(async (event) => {
         params,
         body,
         async onResponseError({request, response}): Promise<void> {
+            console.log(response)
             // Access token expired, try to refresh it
             if (response.status === 401 && authorization?.startsWith('Bearer') && authorization?.split(' ')[1] !== undefined) {
 
                 try {
-                    const refreshToken = getCookie(event, 'refresh_token'); // Assuming refresh token is stored in a cookie
+                    // Assuming refresh token is stored in a cookie
                     if (refreshToken === undefined) {
                         console.log('Refresh token not found')
                         return
@@ -60,15 +63,13 @@ export default defineEventHandler(async (event) => {
                         httpOnly: true,
                         path: '/',
                         maxAge: refreshResponse.expires_in*60,
-                        domain:  '.'+new URL(appUrl).hostname,
                         secure: env !== "dev"
                     })
                     setCookie(event, 'refresh_token', refreshResponse.refresh_token, {
                         httpOnly: true,
                         path: '/',
                         maxAge: refreshResponse.refresh_token_expires_in*60,
-                        domain:  '.'+new URL(appUrl).hostname,
-                        secure: env !== "dev"
+                        secure: env !== "dev",
                     })
                     authorization = `Bearer ${refreshResponse.access_token}`;
 
@@ -95,23 +96,27 @@ export default defineEventHandler(async (event) => {
                     httpOnly: true,
                     path: '/',
                     maxAge: response._data['expires_in']*60,
-                    domain:  '.'+new URL(appUrl).hostname,
                     secure: env !== "dev"
                 })
                 setCookie(event, 'refresh_token', response._data['refresh_token'], {
                     httpOnly: true,
                     path: '/',
                     maxAge: response._data['refresh_token_expires_in']*60,
-                    domain:  '.'+new URL(appUrl).hostname,
                     secure: env !== "dev"
                 })
             }
             if(request.toString().includes('/api/v1/auth/logout')){
-                deleteCookie(event, 'access_token')
-                deleteCookie(event, 'refresh_token')
+                setCookie(event, 'refresh_token', '', {
+                    maxAge: 0,
+
+                })
+                setCookie(event, 'access_token', '', {
+                    maxAge: 0,
+                })
             }
         }
     }).catch(async (error) => {
+        console.log(error)
         if (error.status === 401 ) {
             if ((authorization?.startsWith('Bearer') && authorization?.split(' ')[1] !== undefined)){
                 return await $fetch(url, {
